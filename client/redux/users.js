@@ -26,6 +26,17 @@ export const fetchSingleUser = (user) => {
   };
 };
 
+export const fetchSingleUserWithId = (id) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(`api/users/login/${id}`);
+      dispatch(setSingleUser(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 const initialState = {
   singleUser: {},
 };

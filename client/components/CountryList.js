@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchAllCountries, fetchSingleCountry } from "../redux/countries";
+import { fetchSingleUser, fetchSingleUserWithId } from "../redux/users";
 
 let counter = 0;
 let myMap;
@@ -22,6 +23,8 @@ class CountryList extends Component {
   async componentDidMount() {
     let beenToPlaces = [];
     try {
+      await this.props.getSingleUser(this.props.match.params.id);
+
       await Promise.all(
         this.props.singleUser.locations.map(async (location) => {
           const { data } = await axios.get(
@@ -87,7 +90,7 @@ class CountryList extends Component {
     });
   }
   render() {
-    console.log(`from render props`, this.state);
+    console.log(`from render props`, this.props.match);
     return (
       <div>
         {this.state.allCountries.length !== 0 ? (
@@ -131,6 +134,7 @@ const mapDispatchToProps = (dispatch) => {
     getAllCountries: () => dispatch(fetchAllCountries()),
     getSingleCountry: (countryName) =>
       dispatch(fetchSingleCountry(countryName)),
+    getSingleUser: (id) => dispatch(fetchSingleUserWithId(id)),
   };
 };
 

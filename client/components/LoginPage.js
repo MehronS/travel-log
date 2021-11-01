@@ -20,7 +20,7 @@ class LoginPage extends Component {
       prevProps.singleUser !== this.props.singleUser &&
       this.props.singleUser !== "Not Allowed"
     ) {
-      this.props.history.push(`/dashboard`);
+      this.props.history.push(`/dashboard/${this.props.singleUser.id}`);
     }
   }
 

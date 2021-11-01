@@ -38,6 +38,18 @@ router.post(`/login`, async (req, res, next) => {
   }
 });
 
+// /api/users/login/:id
+router.get(`/login/:id`, async (req, res, next) => {
+  try {
+    const user = await User.findByPk(req.params.id, {
+      include: [{ model: Location }],
+    });
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});
+
 // /api/users/:ccn3
 router.route(`/:ccn3`).post(async (req, res, next) => {
   try {
