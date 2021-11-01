@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { fetchSingleUser } from "../redux/users";
 
 class LoginPage extends Component {
@@ -11,7 +12,16 @@ class LoginPage extends Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSignin = this.handleSignin.bind(this);
-    this.handleCreate = this.handleCreate.bind(this);
+    // this.handleCreate = this.handleCreate.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.singleUser !== this.props.singleUser &&
+      this.props.singleUser !== "No user Found"
+    ) {
+      this.props.history.push(`/dashboard`);
+    }
   }
 
   handleChange(event) {
@@ -19,17 +29,19 @@ class LoginPage extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
-    console.log(`handle change`, this.state);
   }
 
   async handleSignin() {
     try {
+      await this.props.userLogin({ ...this.state });
+      // console.log(`handle signin`, this.props.singleUser);
     } catch (error) {
       console.error(error);
     }
   }
 
   render() {
+    // console.log(`from login render`, this.props);
     return (
       <div>
         Login Damnit
@@ -52,7 +64,7 @@ class LoginPage extends Component {
           />
           <div className="login_buttons_div">
             <br />
-            <button onClick={() => this.handleSignin}>Sign In</button>
+            <button onClick={this.handleSignin}>Sign In</button>
             <button onClick={() => this.handleCreate}>Create Account</button>
           </div>
         </fieldset>

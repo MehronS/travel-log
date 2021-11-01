@@ -19,6 +19,7 @@ router.route(`/`).post(async (req, res, next) => {
 // /api/users/login
 router.get(`/login`, async (req, res, next) => {
   try {
+    console.log(req.body);
     const [findUser] = await User.findAll({
       where: { email: req.body.email, password: req.body.password },
       include: [{ model: Location }],
@@ -26,7 +27,6 @@ router.get(`/login`, async (req, res, next) => {
 
     res.send(findUser);
   } catch (error) {
-    res.send(`No user Found`);
     next(error);
   }
 });
