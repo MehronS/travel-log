@@ -1,7 +1,11 @@
 import axios from "axios";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchAllCountries, fetchSingleCountry } from "../redux/countries";
+import {
+  fetchAddSingleCountry,
+  fetchAllCountries,
+  fetchSingleCountry,
+} from "../redux/countries";
 import { fetchSingleUser, fetchSingleUserWithId } from "../redux/users";
 
 let counter = 0;
@@ -74,7 +78,9 @@ class CountryList extends Component {
   }
 
   async addMarker(countryName) {
-    await this.props.getSingleCountry(countryName);
+    await this.props.addSingleCountry(countryName, {
+      id: this.props.match.params.id,
+    });
 
     this.setState({
       beenTo: [...this.state.beenTo, this.props.singleCountry],
@@ -135,6 +141,8 @@ const mapDispatchToProps = (dispatch) => {
     getSingleCountry: (countryName) =>
       dispatch(fetchSingleCountry(countryName)),
     getSingleUser: (id) => dispatch(fetchSingleUserWithId(id)),
+    addSingleCountry: (countryName, id) =>
+      dispatch(fetchAddSingleCountry(countryName, id)),
   };
 };
 

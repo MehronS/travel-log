@@ -44,6 +44,18 @@ export const fetchSingleCountry = (countryName) => {
   };
 };
 
+export const fetchAddSingleCountry = (countryName, userId) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post(`api/countries/${countryName}`, userId);
+
+      dispatch(setSingleCountry(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 const initialState = {
   countries: [],
   singleCountry: {},
