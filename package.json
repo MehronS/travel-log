@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
+    "bcrypt": "^5.0.1",
     "eslint-plugin-react": "^7.26.1",
     "express": "^4.17.1",
     "morgan": "^1.10.0",

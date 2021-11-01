@@ -6,8 +6,8 @@ class LoginPage extends Component {
   constructor() {
     super();
     this.state = {
-      email: ``,
-      password: ``,
+      email: "mehrons@gmail.com",
+      password: "1111",
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -18,7 +18,7 @@ class LoginPage extends Component {
   componentDidUpdate(prevProps) {
     if (
       prevProps.singleUser !== this.props.singleUser &&
-      this.props.singleUser !== "No user Found"
+      this.props.singleUser !== "Not Allowed"
     ) {
       this.props.history.push(`/dashboard`);
     }
@@ -34,7 +34,6 @@ class LoginPage extends Component {
   async handleSignin() {
     try {
       await this.props.userLogin({ ...this.state });
-      // console.log(`handle signin`, this.props.singleUser);
     } catch (error) {
       console.error(error);
     }

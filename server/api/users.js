@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const axios = require("axios");
 const { User, Location } = require("../db");
+const bcrypt = require("bcrypt");
 
 module.exports = router;
 
@@ -17,15 +18,21 @@ router.route(`/`).post(async (req, res, next) => {
 });
 
 // /api/users/login
-router.get(`/login`, async (req, res, next) => {
+router.post(`/login`, async (req, res, next) => {
   try {
-    console.log(req.body);
+    console.log(`from api`, req.body);
     const [findUser] = await User.findAll({
-      where: { email: req.body.email, password: req.body.password },
+      where: { email: req.body.email },
       include: [{ model: Location }],
     });
 
-    res.send(findUser);
+    if (!findUser) res.status(400).send(`Cannot Find User`);
+    else if (await bcrypt.compare(req.body.password, findUser.password)) {
+      delete findUser.password;
+      res.send(findUser);
+    } else {
+      res.send(`Not Allowed`);
+    }
   } catch (error) {
     next(error);
   }

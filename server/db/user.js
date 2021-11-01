@@ -1,5 +1,6 @@
 const Sequelize = require("sequelize");
 const db = require("./database");
+const bcrypt = require("bcrypt");
 
 const User = db.define("user", {
   firstName: {
@@ -36,6 +37,17 @@ const User = db.define("user", {
       notEmpty: true,
     },
   },
+});
+
+User.addHook("beforeCreate", async (user) => {
+  try {
+    const salt = await bcrypt.genSalt(10);
+    // added .toString just in case the password comes through as an integer (like in the seed)
+    const hash = await bcrypt.hash(user.password.toString(), salt);
+    user.password = hash;
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 module.exports = User;

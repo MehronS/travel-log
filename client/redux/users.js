@@ -17,9 +17,8 @@ export const setSingleUser = (user) => {
 export const fetchSingleUser = (user) => {
   return async (dispatch) => {
     try {
-      console.log(`from thunk`, user);
-      const data = await axios.get(`/api/users/login`, user);
-      console.log(`response from thunk`, data);
+      const { data } = await axios.post(`/api/users/login`, user);
+
       dispatch(setSingleUser(data));
     } catch (error) {
       console.error(error);

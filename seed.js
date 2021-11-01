@@ -3,19 +3,13 @@ const { db, User, Location } = require("./server/db");
 const locations = [
   {
     name: "United States",
-    createdAt: "2021-10-31 17:59:40.471-04",
-    updatedAt: "2021-10-31 17:59:40.471-04",
   },
   {
     name: "Eritrea",
-    createdAt: "2021-10-31 19:34:59.183-04",
-    updatedAt: "2021-10-31 19:34:59.183-04",
   },
 
   {
     name: "Tajikistan",
-    createdAt: "2021-10-31 19:34:59.183-04",
-    updatedAt: "2021-10-31 19:34:59.183-04",
   },
 ];
 
@@ -24,36 +18,28 @@ const users = [
     firstName: "Mehron",
     lastName: "Latifi",
     email: "mehrons@gmail.com",
-    password: 1111,
-    createdAt: "2021-10-31 16:00:54.502-04",
-    updatedAt: "2021-10-31 16:00:54.502-04",
+    password: "1111",
   },
 
   {
     firstName: "Nanish",
     lastName: "Saynieva",
     email: "nana_saynivea@yup.com",
-    password: 1111,
-    createdAt: "2021-10-31 16:00:54.502-04",
-    updatedAt: "2021-10-31 16:00:54.502-04",
+    password: "1111",
   },
 
   {
     firstName: "Mr.Nakka",
     lastName: "Latifi",
     email: "mrnakka@gmail.com",
-    password: 1111,
-    createdAt: "2021-10-31 16:00:54.502-04",
-    updatedAt: "2021-10-31 16:00:54.502-04",
+    password: "1111",
   },
 
   {
     firstName: "Mr.Mr.Nakka",
     lastName: "Latifi",
     email: "mrmrnakka@gmail.com",
-    password: 1111,
-    createdAt: "2021-10-31 16:00:54.502-04",
-    updatedAt: "2021-10-31 16:00:54.502-04",
+    password: "1111",
   },
 ];
 
@@ -70,13 +56,20 @@ const seed = async () => {
         return User.create(user);
       })
     );
+  } catch (error) {
+    console.error(error);
+  }
+};
 
+const seed2 = async () => {
+  try {
     const allUsers = await User.findAll();
     const allLocations = await Location.findAll();
+    console.log(allUsers);
 
     await Promise.all(
       allUsers.map((user) => {
-        user.addLocation(allLocations);
+        user.addLocations(allLocations);
       })
     );
   } catch (error) {
@@ -84,6 +77,7 @@ const seed = async () => {
   }
 };
 
+// first run npm seed then change seed to seed2 and run it again... beforeCreate hook is causing the users not to load in time to create associations
 seed()
   .then(() => {
     console.log("Seeding Success!");
@@ -91,7 +85,6 @@ seed()
   .catch((err) => {
     console.log("Could not Seed Data");
     console.error(err);
-    db.close();
   });
 
 module.exports = seed;

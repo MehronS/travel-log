@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchAllCountries, fetchSingleCountry } from "../redux/countries";
@@ -10,7 +11,7 @@ class CountryList extends Component {
     super();
     this.state = {
       allCountries: [],
-      beenTo: dummy,
+      beenTo: [],
       countryName: {},
     };
 
@@ -19,12 +20,28 @@ class CountryList extends Component {
   }
 
   async componentDidMount() {
-    await this.props.getAllCountries();
-    this.loadmap();
-    this.setState({
-      allCountries: this.props.countries,
-    });
-    this.loadMarkers();
+    let beenToPlaces = [];
+    try {
+      await Promise.all(
+        this.props.singleUser.locations.map(async (location) => {
+          const { data } = await axios.get(
+            `https://restcountries.com/v3.1/name/${location.name}`
+          );
+          beenToPlaces.push(...data);
+        })
+      );
+
+      await this.props.getAllCountries();
+      this.loadmap();
+      this.setState({
+        allCountries: this.props.countries,
+        beenTo: beenToPlaces,
+      });
+
+      this.loadMarkers();
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   loadMarkers() {
@@ -70,7 +87,7 @@ class CountryList extends Component {
     });
   }
   render() {
-    // console.log(`from render props`, this.state.beenTo);
+    console.log(`from render props`, this.state);
     return (
       <div>
         {this.state.allCountries.length !== 0 ? (
@@ -105,6 +122,7 @@ const mapStateToProps = (state) => {
   return {
     countries: state.countries.countries,
     singleCountry: state.countries.singleCountry,
+    singleUser: state.users.singleUser,
   };
 };
 
