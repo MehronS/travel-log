@@ -37,6 +37,17 @@ export const fetchSingleUserWithId = (id) => {
   };
 };
 
+export const fetchCreatedUser = (user) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post(`api/users/`, user);
+      dispatch(setSingleUser(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 const initialState = {
   singleUser: {},
 };

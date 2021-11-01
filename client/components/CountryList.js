@@ -62,8 +62,6 @@ class CountryList extends Component {
       this.props.singleCountry.latlng[0],
       this.props.singleCountry.latlng[1],
     ]).addTo(myMap);
-
-    console.log(this.state.beenTo);
   }
 
   loadmap() {
@@ -96,7 +94,6 @@ class CountryList extends Component {
     });
   }
   render() {
-    console.log(`from render props`, this.props.match);
     return (
       <div>
         {this.state.allCountries.length !== 0 ? (

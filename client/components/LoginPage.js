@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchSingleUser } from "../redux/users";
+import { fetchCreatedUser, fetchSingleUser } from "../redux/users";
 
 class LoginPage extends Component {
   constructor() {
@@ -8,11 +8,13 @@ class LoginPage extends Component {
     this.state = {
       email: "mehrons@gmail.com",
       password: "1111",
+      firstName: ``,
+      lastName: ``,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSignin = this.handleSignin.bind(this);
-    // this.handleCreate = this.handleCreate.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -39,13 +41,20 @@ class LoginPage extends Component {
     }
   }
 
+  async handleCreate() {
+    try {
+      await this.props.userCreate({ ...this.state });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   render() {
     // console.log(`from login render`, this.props);
     return (
       <div>
-        Login Damnit
-        <br />
         <fieldset>
+          <legend>Login</legend>
           <label>Email</label>
           <br />
           <input
@@ -64,7 +73,44 @@ class LoginPage extends Component {
           <div className="login_buttons_div">
             <br />
             <button onClick={this.handleSignin}>Sign In</button>
-            <button onClick={() => this.handleCreate}>Create Account</button>
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend>Create Account</legend>
+          <label>First Name</label>
+          <br />
+          <input
+            name="firstName"
+            value={this.state.firstName}
+            onChange={this.handleChange}
+          />
+          <br />
+          <label>Last Name</label>
+          <br />
+          <input
+            name="lastName"
+            value={this.state.lastName}
+            onChange={this.handleChange}
+          />
+          <br />
+          <label>Email</label>
+          <br />
+          <input
+            name="email"
+            value={this.state.email}
+            onChange={this.handleChange}
+          />
+          <br />
+          <label>Password</label>
+          <br />
+          <input
+            name="password"
+            value={this.state.password}
+            onChange={this.handleChange}
+          />
+          <div className="login_buttons_div">
+            <br />
+            <button onClick={this.handleCreate}>Create Account</button>
           </div>
         </fieldset>
       </div>
@@ -81,6 +127,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     userLogin: (user) => dispatch(fetchSingleUser(user)),
+    userCreate: (user) => dispatch(fetchCreatedUser(user)),
   };
 };
 
