@@ -16,6 +16,20 @@ router.route(`/`).post(async (req, res, next) => {
   }
 });
 
+// /api/users/login
+router.get(`/login`, async (req, res, next) => {
+  try {
+    const [findUser] = await User.findAll({
+      where: { email: req.body.email, password: req.body.password },
+    });
+
+    res.send(findUser);
+  } catch (error) {
+    res.send(`No user Found`);
+    next(error);
+  }
+});
+
 // /api/users/:ccn3
 router.route(`/:ccn3`).post(async (req, res, next) => {
   try {

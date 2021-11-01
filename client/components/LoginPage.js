@@ -42,8 +42,8 @@ export default class LoginPage extends Component {
           />
           <div className="login_buttons_div">
             <br />
-            <button>Sign In</button>
-            <button>Create Account</button>
+            <button onClick={() => this.handleSignin}>Sign In</button>
+            <button onClick={() => this.handleCreate}>Create Account</button>
           </div>
         </fieldset>
       </div>
