@@ -17,7 +17,7 @@ class CountryList extends Component {
     this.state = {
       allCountries: [],
       beenTo: [],
-      countryName: {},
+      countryName: ``,
     };
 
     this.addMarker = this.addMarker.bind(this);
@@ -82,15 +82,18 @@ class CountryList extends Component {
   }
 
   async addMarker(countryName) {
-    await this.props.addSingleCountry(countryName, {
-      id: this.props.match.params.id,
-    });
+    if (!countryName) return alert(`Country Must Have Name`);
+    else {
+      await this.props.addSingleCountry(countryName, {
+        id: this.props.match.params.id,
+      });
 
-    this.setState({
-      beenTo: [...this.state.beenTo, this.props.singleCountry],
-    });
+      this.setState({
+        beenTo: [...this.state.beenTo, this.props.singleCountry],
+      });
 
-    this.loadSingleMarker();
+      this.loadSingleMarker();
+    }
   }
 
   handleChange(event) {
@@ -98,20 +101,31 @@ class CountryList extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
+    console.log(this.state);
   }
   render() {
-    console.log(`all the countires`, this.state.allCountries);
+    const countryList =
+      this.state.beenTo === []
+        ? []
+        : this.state.beenTo.map((country) => country.name.common);
+
+    const unvisitedCountries =
+      countryList !== [] && this.state.allCountries !== []
+        ? this.state.allCountries.filter(
+            (country) => !countryList.includes(country.name.common)
+          )
+        : this.state.allCountries;
 
     return (
       <div>
-        {this.state.allCountries.length !== 0 ? (
+        {unvisitedCountries.length !== 0 ? (
           <select
             onChange={this.handleChange}
             value={this.state.countryName}
             name="countryName"
           >
             <option></option>
-            {this.state.allCountries.map((country) => {
+            {unvisitedCountries.map((country) => {
               counter++;
               return (
                 <option key={counter} value={country.name.common}>
