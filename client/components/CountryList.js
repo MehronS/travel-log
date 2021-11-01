@@ -103,8 +103,8 @@ class CountryList extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    countries: state.countries,
-    singleCountry: state.singleCountry,
+    countries: state.countries.countries,
+    singleCountry: state.countries.singleCountry,
   };
 };
 

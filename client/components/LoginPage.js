@@ -1,6 +1,7 @@
 import React, { Component } from "react";
+import { fetchSingleUser } from "../redux/users";
 
-export default class LoginPage extends Component {
+class LoginPage extends Component {
   constructor() {
     super();
     this.state = {
@@ -9,6 +10,8 @@ export default class LoginPage extends Component {
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.handleSignin = this.handleSignin.bind(this);
+    this.handleCreate = this.handleCreate.bind(this);
   }
 
   handleChange(event) {
@@ -17,6 +20,13 @@ export default class LoginPage extends Component {
       [event.target.name]: event.target.value,
     });
     console.log(`handle change`, this.state);
+  }
+
+  async handleSignin() {
+    try {
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   render() {
@@ -50,3 +60,17 @@ export default class LoginPage extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    singleUser: state.users.singleUser,
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    userLogin: (user) => dispatch(fetchSingleUser(user)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginPage);

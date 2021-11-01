@@ -21,6 +21,7 @@ router.get(`/login`, async (req, res, next) => {
   try {
     const [findUser] = await User.findAll({
       where: { email: req.body.email, password: req.body.password },
+      include: [{ model: Location }],
     });
 
     res.send(findUser);
