@@ -39,9 +39,15 @@ class CountryList extends Component {
       );
 
       await this.props.getAllCountries();
+      let sorted = [...this.props.countries];
+      sorted = sorted.sort((a, b) => {
+        if (a.name.common < b.name.common) return -1;
+        if (a.name.common > b.name.common) return 1;
+        return 0;
+      });
       this.loadmap();
       this.setState({
-        allCountries: this.props.countries,
+        allCountries: sorted,
         beenTo: beenToPlaces,
       });
 
@@ -94,6 +100,8 @@ class CountryList extends Component {
     });
   }
   render() {
+    console.log(`all the countires`, this.state.allCountries);
+
     return (
       <div>
         {this.state.allCountries.length !== 0 ? (
@@ -107,7 +115,7 @@ class CountryList extends Component {
               counter++;
               return (
                 <option key={counter} value={country.name.common}>
-                  {country.name.official}
+                  {country.name.common}
                 </option>
               );
             })}
