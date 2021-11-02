@@ -66,22 +66,45 @@ class CountryList extends Component {
       });
       return L.marker([country.latlng[0], country.latlng[1]], {
         icon: myIcon,
-      }).addTo(myMap);
+      })
+        .addTo(myMap)
+        .bindPopup(
+          `<div class="openPopup">${country.flag}${country.name.common}${country.flag}</div>`
+        )
+        .on(`popupopen`, () => {
+          document
+            .querySelector(".openPopup")
+            .addEventListener(`click`, (e) => {
+              e.preventDefault();
+              this.props.history.push(
+                `/dashboard/country/${country.name.common}`
+              );
+            });
+        });
     });
   }
 
   loadSingleMarker() {
+    let country = this.props.singleCountry;
     let myIcon = L.icon({
-      iconUrl: this.props.singleCountry.flags.png,
+      iconUrl: country.flags.png,
       iconSize: [30, 30],
       // iconAnchor: [22, 94],
     });
-    L.marker(
-      [this.props.singleCountry.latlng[0], this.props.singleCountry.latlng[1]],
-      {
-        icon: myIcon,
-      }
-    ).addTo(myMap);
+
+    L.marker([country.latlng[0], country.latlng[1]], {
+      icon: myIcon,
+    })
+      .addTo(myMap)
+      .bindPopup(
+        `<div class="openPopup">${country.flag}${country.name.common}${country.flag}</div>`
+      )
+      .on(`popupopen`, () => {
+        document.querySelector(".openPopup").addEventListener(`click`, (e) => {
+          e.preventDefault();
+          this.props.history.push(`/dashboard/country/${country.name.common}`);
+        });
+      });
   }
 
   loadmap() {
@@ -93,15 +116,10 @@ class CountryList extends Component {
     L.tileLayer("https://{s}.tile.openstreetmap.fr/hot//{z}/{x}/{y}.png").addTo(
       myMap
     );
-
-    // L.tileLayer("https://{s}.tile.openstreetmap.fr/hot//{z}/{x}/{y}.png", {
-    //   tileSize: 512,
-    //   zoomOffset: -1,
-    // }).addTo(myMap);
   }
 
   async addMarker(countryName) {
-    if (!countryName) return alert(`Country Must Have Name`);
+    if (!countryName) return alert(`Please Select Country`);
     else {
       await this.props.addSingleCountry(countryName, {
         id: this.props.match.params.id,

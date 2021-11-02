@@ -13,7 +13,7 @@ function Routes() {
           <Route exact path="/dashboard/:id" component={CountryList} />
           <Route
             exact
-            path="/dashboard/country/:id"
+            path="/dashboard/country/:name"
             component={SingleCountry}
           />
         </Switch>
