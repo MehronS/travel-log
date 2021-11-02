@@ -58,16 +58,30 @@ class CountryList extends Component {
   }
 
   loadMarkers() {
-    this.state.beenTo.map((country) =>
-      L.marker([country.latlng[0], country.latlng[1]]).addTo(myMap)
-    );
+    this.state.beenTo.map((country) => {
+      let myIcon = L.icon({
+        iconUrl: country.flags.png,
+        iconSize: [30, 30],
+        // iconAnchor: [22, 94],
+      });
+      return L.marker([country.latlng[0], country.latlng[1]], {
+        icon: myIcon,
+      }).addTo(myMap);
+    });
   }
 
   loadSingleMarker() {
-    L.marker([
-      this.props.singleCountry.latlng[0],
-      this.props.singleCountry.latlng[1],
-    ]).addTo(myMap);
+    let myIcon = L.icon({
+      iconUrl: this.props.singleCountry.flags.png,
+      iconSize: [30, 30],
+      // iconAnchor: [22, 94],
+    });
+    L.marker(
+      [this.props.singleCountry.latlng[0], this.props.singleCountry.latlng[1]],
+      {
+        icon: myIcon,
+      }
+    ).addTo(myMap);
   }
 
   loadmap() {
@@ -79,6 +93,11 @@ class CountryList extends Component {
     L.tileLayer("https://{s}.tile.openstreetmap.fr/hot//{z}/{x}/{y}.png").addTo(
       myMap
     );
+
+    // L.tileLayer("https://{s}.tile.openstreetmap.fr/hot//{z}/{x}/{y}.png", {
+    //   tileSize: 512,
+    //   zoomOffset: -1,
+    // }).addTo(myMap);
   }
 
   async addMarker(countryName) {
