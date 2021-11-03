@@ -78,7 +78,7 @@ class CountryList extends Component {
             .addEventListener(`click`, (e) => {
               e.preventDefault();
               this.props.history.push(
-                `/dashboard/country/${country.name.common}`
+                `/dashboard/country/${country.name.common}/user/${this.props.singleUser.id}`
               );
             });
         });

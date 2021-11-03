@@ -1,7 +1,11 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchSingleCountry } from "../redux/countries";
-import { fetchSingleUser, fetchUserPicturesAtLocation } from "../redux/users";
+import {
+  fetchSingleUser,
+  fetchUserPicturesAtLocation,
+  updateUserPicturesAtLocation,
+} from "../redux/users";
 
 let myMap;
 
@@ -10,7 +14,12 @@ class SingleCountry extends Component {
     super();
     this.state = {
       singleCountry: ``,
+      imageUrl: ``,
+      singleUser: {},
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   async componentDidMount() {
@@ -19,10 +28,11 @@ class SingleCountry extends Component {
       console.log(
         `from mount`,
         this.props.match.params.name,
-        this.props.singleUser.id
+        this.props.match.params.userId
       );
       const locationName = { locationName: this.props.match.params.name };
-      await this.props.getUserPictures(4, locationName);
+      const userId = this.props.match.params.userId;
+      await this.props.getUserPictures(userId, locationName);
       this.setState({ singleCountry: this.props.singleCountry });
 
       this.loadmap();
@@ -54,8 +64,32 @@ class SingleCountry extends Component {
     ]).addTo(myMap);
   }
 
+  async handleSubmit(e) {
+    e.preventDefault();
+    try {
+      const userId = this.props.match.params.userId;
+      const locationInfo = {
+        imageUrl: this.state.imageUrl,
+        locationName: this.props.match.params.name,
+      };
+
+      this.props.updatePictures(userId, locationInfo);
+      this.setState({ imageUrl: `` });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  handleChange(event) {
+    event.preventDefault();
+    this.setState({
+      [event.target.name]: event.target.value,
+    });
+    // console.log(this.state);
+  }
+
   render() {
-    console.log(`from single country`, this.props.userPictures);
+    // console.log(`from single country`, this.props);
     const country = this.state.singleCountry
       ? this.state.singleCountry
       : undefined;
@@ -82,8 +116,23 @@ class SingleCountry extends Component {
             </div>
             <form>
               <label>Add Your Pictures</label>
-              <input />
-              <button>Submit</button>
+              <input
+                placeholder="Input URL Here"
+                name="imageUrl"
+                onChange={this.handleChange}
+                value={this.state.imageUrl}
+              />
+              <button onClick={(e) => this.handleSubmit(e)}>Submit</button>
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  this.props.history.push(
+                    `/dashboard/${this.props.match.params.userId}`
+                  );
+                }}
+              >
+                Back
+              </button>
             </form>
             {this.props.userPictures
               ? this.props.userPictures.map((link) => {
@@ -123,6 +172,8 @@ const mapDispatchToProps = (dispatch) => {
     getSingleUser: (id) => dispatch(fetchSingleUser(id)),
     getUserPictures: (userId, locationName) =>
       dispatch(fetchUserPicturesAtLocation(userId, locationName)),
+    updatePictures: (userId, pictureInfo) =>
+      dispatch(updateUserPicturesAtLocation(userId, pictureInfo)),
   };
 };
 

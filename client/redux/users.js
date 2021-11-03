@@ -71,6 +71,20 @@ export const fetchUserPicturesAtLocation = (userId, locationName) => {
   };
 };
 
+export const updateUserPicturesAtLocation = (userId, locationInfo) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post(
+        `api/users/${userId}/pictures`,
+        locationInfo
+      );
+      dispatch(setUserPicturesAtLocation(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 const initialState = {
   singleUser: {},
   userPicturesAtLocation: [],
