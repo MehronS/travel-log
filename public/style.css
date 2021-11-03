@@ -30,8 +30,9 @@
 }
 
 .countryImages {
-  width: 300px;
+  width: 500px;
   height: 300px;
+  margin: 5px;
 }
 
 nav {
@@ -48,4 +49,8 @@ nav {
 .nav_links {
   color: white;
   text-decoration: none;
+}
+
+.imageField {
+  display: flex;
 }

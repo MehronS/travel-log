@@ -64,11 +64,6 @@ class SingleCountry extends Component {
       <div>
         {country ? (
           <div>
-            <form>
-              <label>Add Your Pictures</label>
-              <input />
-              <button>Submit</button>
-            </form>
             <div className="singleCountryDiv">
               <fieldset id="map" className="singleCountryMap"></fieldset>
 
@@ -85,14 +80,22 @@ class SingleCountry extends Component {
                 </h3>
               </fieldset>
             </div>
+            <form>
+              <label>Add Your Pictures</label>
+              <input />
+              <button>Submit</button>
+            </form>
             {this.props.userPictures
               ? this.props.userPictures.map((link) => {
                   return (
-                    <img
-                      src={link.imageUrl}
-                      key={link.id}
-                      className="countryImages"
-                    />
+                    <fieldset key={link.id} className="imageField">
+                      <img src={link.imageUrl} className="countryImages" />
+                      <div>
+                        <label>Description</label>
+                        <br />
+                        <textarea rows="4" cols="50" />
+                      </div>
+                    </fieldset>
                   );
                 })
               : null}
