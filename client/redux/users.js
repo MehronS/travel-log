@@ -64,12 +64,16 @@ export const fetchCreatedUser = (user) => {
 };
 
 export const fetchUserPicturesAtLocation = (userId, locationName) => {
+  const token = window.localStorage.getItem(`token`);
+
   return async (dispatch) => {
     try {
-      const { data } = await axios.put(
-        `api/users/${userId}/pictures`,
-        locationName
-      );
+      const { data } = await axios({
+        url: `api/users/${userId}/pictures`,
+        method: `put`,
+        headers: { authorization: token },
+        data: locationName,
+      });
 
       dispatch(setUserPicturesAtLocation(data));
     } catch (error) {

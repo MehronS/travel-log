@@ -32,9 +32,6 @@ class CountryList extends Component {
     }
     let beenToPlaces = [];
     try {
-      // await this.props.getSingleUser(this.props.match.params.id);
-      console.log(`mounting`, this.props);
-
       await Promise.all(
         this.props.singleUser.locations.map(async (location) => {
           const { data } = await axios.get(

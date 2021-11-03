@@ -11,13 +11,13 @@ module.exports = router;
 // Token Middleware Function
 const authenticateToken = (req, res, next) => {
   const token = req.headers["authorization"];
-  // console.log(`from token`, token);
 
   if (token === null) return res.sendStatus(401);
 
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
     req.userId = user.id;
+
     next();
   });
 };
@@ -36,11 +36,13 @@ router.route(`/`).post(async (req, res, next) => {
 // /api/users/:id/pictures
 router
   .route("/:id/pictures")
-  .put(async (req, res, next) => {
+  .put(authenticateToken, async (req, res, next) => {
     try {
-      console.log(`from server`, req.body);
       const userLocationPics = await PictureAtLocation.findAll({
-        where: { userId: req.params.id, locationName: req.body.locationName },
+        where: {
+          userId: req.userId,
+          locationName: req.body.locationName,
+        },
       });
 
       res.send(userLocationPics);
@@ -76,7 +78,6 @@ router
 
 router.post(`/login`, async (req, res, next) => {
   try {
-    console.log(`from api`, req.body);
     const [findUser] = await User.findAll({
       where: { email: req.body.email },
       include: [{ model: Location }],
@@ -88,7 +89,7 @@ router.post(`/login`, async (req, res, next) => {
 
       // generate token
       const user = { email: findUser.email, id: findUser.id };
-      console.log(`from login`, user);
+
       const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
 
       res.setHeader("authorization", accessToken).send(findUser);
@@ -103,7 +104,6 @@ router.post(`/login`, async (req, res, next) => {
 // /api/users/:id
 router.get(`/:id`, authenticateToken, async (req, res, next) => {
   try {
-    console.log(`from id`, req.userId);
     const user = await User.findByPk(req.userId, {
       include: [
         {

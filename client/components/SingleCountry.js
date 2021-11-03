@@ -27,25 +27,25 @@ class SingleCountry extends Component {
   }
 
   async componentDidMount() {
+    const token = window.localStorage.getItem(`token`);
     try {
-      await this.props.getSingleCountry(this.props.match.params.name);
-      const locationName = { locationName: this.props.match.params.name };
-      const userId = this.props.match.params.userId;
-      await this.props.getUserPictures(userId, locationName);
-      this.setState({ singleCountry: this.props.singleCountry });
+      if (token) {
+        await this.props.getSingleCountry(this.props.match.params.name);
+        const locationName = { locationName: this.props.match.params.name };
+        const userId = this.props.match.params.userId;
+        await this.props.getUserPictures(userId, locationName);
+        this.setState({ singleCountry: this.props.singleCountry });
 
-      this.loadmap();
-      this.loadMarker();
+        this.loadmap();
+        this.loadMarker();
+      } else {
+        alert(`nah fam`);
+        this.props.history.push(`/`);
+      }
     } catch (error) {
       console.error(error);
     }
   }
-
-  // componentDidUpdate(prev) {
-  //   if (prev.state.singleImage !== this.state.singleImage) {
-  //     this.loadmap();
-  //   }
-  // }
 
   loadmap() {
     const country = this.props.singleCountry;
