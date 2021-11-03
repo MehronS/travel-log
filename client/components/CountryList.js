@@ -7,6 +7,7 @@ import {
   fetchSingleCountry,
 } from "../redux/countries";
 import { fetchSingleUser, fetchSingleUserWithId } from "../redux/users";
+import Navbar from "./Navbar";
 
 let counter = 0;
 let myMap;
@@ -156,6 +157,7 @@ class CountryList extends Component {
 
     return (
       <div>
+        <Navbar />
         {unvisitedCountries.length !== 0 ? (
           <select
             onChange={this.handleChange}
@@ -178,7 +180,7 @@ class CountryList extends Component {
         <button onClick={() => this.addMarker(this.state.countryName)}>
           Submit
         </button>
-        <div id="map"></div>
+        <div id="map" className="mainMap"></div>
       </div>
     );
   }

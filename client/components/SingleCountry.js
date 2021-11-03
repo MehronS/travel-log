@@ -6,6 +6,8 @@ import {
   fetchUserPicturesAtLocation,
   updateUserPicturesAtLocation,
 } from "../redux/users";
+import ModalPictures from "./ModalPictures";
+import Navbar from "./Navbar";
 
 let myMap;
 
@@ -15,21 +17,18 @@ class SingleCountry extends Component {
     this.state = {
       singleCountry: ``,
       imageUrl: ``,
-      singleUser: {},
+      showModal: false,
+      singleImage: ``,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   async componentDidMount() {
     try {
       await this.props.getSingleCountry(this.props.match.params.name);
-      console.log(
-        `from mount`,
-        this.props.match.params.name,
-        this.props.match.params.userId
-      );
       const locationName = { locationName: this.props.match.params.name };
       const userId = this.props.match.params.userId;
       await this.props.getUserPictures(userId, locationName);
@@ -41,6 +40,12 @@ class SingleCountry extends Component {
       console.error(error);
     }
   }
+
+  // componentDidUpdate(prev) {
+  //   if (prev.state.singleImage !== this.state.singleImage) {
+  //     this.loadmap();
+  //   }
+  // }
 
   loadmap() {
     const country = this.props.singleCountry;
@@ -66,6 +71,7 @@ class SingleCountry extends Component {
 
   async handleSubmit(e) {
     e.preventDefault();
+    if (!this.state.imageUrl) return alert(`Please Input Image Url`);
     try {
       const userId = this.props.match.params.userId;
       const locationInfo = {
@@ -85,72 +91,98 @@ class SingleCountry extends Component {
     this.setState({
       [event.target.name]: event.target.value,
     });
-    // console.log(this.state);
+  }
+
+  toggleModal(imageId) {
+    const image = this.props.userPictures.filter(
+      (image) => image.id === imageId
+    );
+
+    this.setState({
+      showModal: !this.state.showModal,
+      singleImage: image[0],
+    });
+
+    if (this.state.showModal)
+      setTimeout(() => {
+        this.loadmap();
+      }, 50);
+
+    console.log(`from toggle`, this.state);
   }
 
   render() {
-    // console.log(`from single country`, this.props);
+    console.log(`from single country`, this.props);
     const country = this.state.singleCountry
       ? this.state.singleCountry
       : undefined;
 
     return (
       <div>
-        {country ? (
-          <div>
-            <div className="singleCountryDiv">
-              <fieldset id="map" className="singleCountryMap"></fieldset>
-
-              <fieldset className="singleCountryInfo">
-                <h1>{country.name.common}</h1>
-                <img src={country.coatOfArms.png} height="100px" />
-                <h3>Capital: {country.capital}</h3>
-                <img src={country.flags.png} />
-                <h3>
-                  Population:{" "}
-                  {country.population
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
-                </h3>
-              </fieldset>
-            </div>
-            <form>
-              <label>Add Your Pictures</label>
-              <input
-                placeholder="Input URL Here"
-                name="imageUrl"
-                onChange={this.handleChange}
-                value={this.state.imageUrl}
-              />
-              <button onClick={(e) => this.handleSubmit(e)}>Submit</button>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  this.props.history.push(
-                    `/dashboard/${this.props.match.params.userId}`
-                  );
-                }}
-              >
-                Back
-              </button>
-            </form>
-            {this.props.userPictures
-              ? this.props.userPictures.map((link) => {
-                  return (
-                    <fieldset key={link.id} className="imageField">
-                      <img src={link.imageUrl} className="countryImages" />
-                      <div>
-                        <label>Description</label>
-                        <br />
-                        <textarea rows="4" cols="50" />
-                      </div>
-                    </fieldset>
-                  );
-                })
-              : null}
-          </div>
+        {this.state.showModal ? (
+          <ModalPictures
+            image={this.state.singleImage}
+            toggleModal={this.toggleModal}
+          />
         ) : (
-          <p>Loading</p>
+          <div>
+            <Navbar />
+            {country ? (
+              <div>
+                <div className="singleCountryDiv">
+                  <fieldset id="map" className="singleCountryMap"></fieldset>
+
+                  <fieldset className="singleCountryInfo">
+                    <h1>{country.name.common}</h1>
+                    <img src={country.coatOfArms.png} height="100px" />
+                    <h3>Capital: {country.capital}</h3>
+                    <img src={country.flags.png} />
+                    <h3>
+                      Population:{" "}
+                      {country.population
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                    </h3>
+                  </fieldset>
+                </div>
+                <form>
+                  <label>Add Your Pictures</label>
+                  <input
+                    placeholder="Input URL Here"
+                    name="imageUrl"
+                    onChange={this.handleChange}
+                    value={this.state.imageUrl}
+                  />
+                  <button onClick={(e) => this.handleSubmit(e)}>Submit</button>
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      this.props.history.push(
+                        `/dashboard/${this.props.match.params.userId}`
+                      );
+                    }}
+                  >
+                    Back
+                  </button>
+                </form>
+                {this.props.userPictures
+                  ? this.props.userPictures.map((link) => {
+                      return (
+                        <fieldset key={link.id} className="imageField">
+                          <img
+                            src={link.imageUrl}
+                            className="countryImages"
+                            onClick={() => this.toggleModal(link.id)}
+                          />
+                        </fieldset>
+                      );
+                    })
+                  : null}
+              </div>
+            ) : (
+              <p>Loading</p>
+            )}
+          </div>
         )}
       </div>
     );

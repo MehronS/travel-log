@@ -2,13 +2,11 @@ import React from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import CountryList from "./CountryList";
 import LoginPage from "./LoginPage";
-import Navbar from "./Navbar";
 import SingleCountry from "./SingleCountry";
 
 function Routes() {
   return (
     <Router>
-      <Navbar />
       <main>
         <Switch>
           <Route exact path="/" component={LoginPage} />
