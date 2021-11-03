@@ -45,16 +45,20 @@ const users = [
 
 const links = [
   {
-    imageUrl: "www.google.com",
+    imageUrl:
+      "https://www.nomadicmatt.com/wp-content/uploads/2020/02/tajikistan_budget.jpg",
   },
   {
-    imageUrl: "www.facebook.com",
+    imageUrl:
+      "https://www.travelanddestinations.com/wp-content/uploads/2019/11/Fann-Mountains-Lake-Tajikistan.jpg",
   },
   {
-    imageUrl: "www.youtube.com",
+    imageUrl:
+      "https://www.worldatlas.com/r/w1200/upload/d5/2e/3f/shutterstock-1033815457.jpg",
   },
   {
-    imageUrl: "www.twitch.com",
+    imageUrl:
+      "https://www.travelanddestinations.com/wp-content/uploads/2019/11/Iskanderkul-in-the-Fann-Mountains-Tajikistan.jpg",
   },
 ];
 
@@ -93,7 +97,7 @@ const seed2 = async () => {
     );
 
     const user1 = await User.findByPk(4);
-    const location1 = await Location.findByPk(3);
+    const location1 = await Location.findByPk("Tajikistan");
 
     await user1.addPictureAtLocation(await PictureAtLocation.findByPk(3)),
       await location1.addPictureAtLocation(await PictureAtLocation.findByPk(3));

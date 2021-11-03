@@ -2,12 +2,14 @@ import React from "react";
 import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import CountryList from "./CountryList";
 import LoginPage from "./LoginPage";
+import Navbar from "./Navbar";
 import SingleCountry from "./SingleCountry";
 
 function Routes() {
   return (
     <Router>
-      <div>
+      <Navbar />
+      <main>
         <Switch>
           <Route exact path="/" component={LoginPage} />
           <Route exact path="/dashboard/:id" component={CountryList} />
@@ -17,7 +19,7 @@ function Routes() {
             component={SingleCountry}
           />
         </Switch>
-      </div>
+      </main>
     </Router>
   );
 }

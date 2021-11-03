@@ -18,17 +18,40 @@ router.route(`/`).post(async (req, res, next) => {
 });
 
 // /api/users/:id/pictures
-router.get("/:id/pictures", async (req, res, next) => {
-  try {
-    const userLocationPics = await PictureAtLocation.findAll({
-      where: { userId: req.params.id, locationId: req.body.id },
-    });
+router
+  .route("/:id/pictures")
+  .put(async (req, res, next) => {
+    try {
+      console.log(`from server`, req.body);
+      const userLocationPics = await PictureAtLocation.findAll({
+        where: { userId: req.params.id, locationName: req.body.locationName },
+      });
 
-    res.send(userLocationPics);
-  } catch (error) {
-    console.error(error);
-  }
-});
+      res.send(userLocationPics);
+    } catch (error) {
+      console.error(error);
+    }
+  })
+  .post(async (req, res, next) => {
+    try {
+      const user = await User.findByPk(req.params.id);
+      const location = await Location.findByPk(req.body.locationName);
+      const image = await PictureAtLocation.findOrCreate({
+        where: { imageUrl: req.body.imageUrl },
+      });
+
+      await user.addPictureAtLocations(image[0]);
+      await location.addPictureAtLocations(image[0]);
+
+      const userLocationPics = await PictureAtLocation.findAll({
+        where: { userId: req.params.id, locationName: req.body.locationName },
+      });
+
+      res.send(userLocationPics);
+    } catch (error) {
+      next(error);
+    }
+  });
 
 // /api/users/login
 router.post(`/login`, async (req, res, next) => {
