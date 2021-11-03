@@ -10,6 +10,8 @@ class LoginPage extends Component {
       password: "1111",
       firstName: ``,
       lastName: ``,
+      newEmail: ``,
+      newPass: ``,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -42,8 +44,14 @@ class LoginPage extends Component {
   }
 
   async handleCreate() {
+    const newUser = {
+      firstName: this.state.firstName,
+      lastName: this.state.lastName,
+      email: this.state.newEmail,
+      password: this.state.newPass,
+    };
     try {
-      await this.props.userCreate({ ...this.state });
+      await this.props.userCreate(newUser);
     } catch (error) {
       console.error(error);
     }
@@ -96,16 +104,16 @@ class LoginPage extends Component {
           <label>Email</label>
           <br />
           <input
-            name="email"
-            value={this.state.email}
+            name="newEmail"
+            value={this.state.newEmail}
             onChange={this.handleChange}
           />
           <br />
           <label>Password</label>
           <br />
           <input
-            name="password"
-            value={this.state.password}
+            name="newPass"
+            value={this.state.newPass}
             onChange={this.handleChange}
           />
           <div className="login_buttons_div">

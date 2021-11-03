@@ -112,7 +112,6 @@ class SingleCountry extends Component {
   }
 
   render() {
-    console.log(`from single country`, this.props);
     const country = this.state.singleCountry
       ? this.state.singleCountry
       : undefined;

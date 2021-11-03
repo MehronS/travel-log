@@ -22,12 +22,18 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
-// /api/users
+// /api/users/create
 
-router.route(`/`).post(async (req, res, next) => {
+router.route(`/create`).post(async (req, res, next) => {
   try {
     const newUser = await User.create(req.body);
-    res.send(newUser);
+
+    // generate token
+    const user = { email: newUser.email, id: newUser.id };
+
+    const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+
+    res.setHeader("authorization", accessToken).send(newUser);
   } catch (error) {
     next(error);
   }

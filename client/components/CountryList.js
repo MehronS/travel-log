@@ -114,7 +114,8 @@ class CountryList extends Component {
 
   loadmap() {
     myMap = L.map("map", {
-      minZoom: 2.5,
+      minZoom: 3,
+
       // zoomControl: false,
     }).setView([0, 0], 0);
 
@@ -161,7 +162,10 @@ class CountryList extends Component {
     return (
       <div>
         <Navbar userId={this.props.singleUser.id} />
-        <p>Add Countries You Have Visited To The Map!</p>
+        <p>
+          Welcome, {this.props.singleUser.firstName}! Add Countries You Have
+          Visited!
+        </p>
         {unvisitedCountries.length !== 0 ? (
           <select
             onChange={this.handleChange}

@@ -55,7 +55,10 @@ export const fetchSingleUserWithId = (id) => {
 export const fetchCreatedUser = (user) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post(`api/users/`, user);
+      const response = await axios.post(`api/users/create`, user);
+      const data = response.data;
+      const token = response.headers[`authorization`];
+      window.localStorage.setItem(`token`, token);
       dispatch(setSingleUser(data));
     } catch (error) {
       console.error(error);
