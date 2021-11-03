@@ -26,9 +26,13 @@ class CountryList extends Component {
   }
 
   async componentDidMount() {
+    const token = window.localStorage.getItem(`token`);
+    if (token) {
+      await this.props.getSingleUser(this.props.match.params.id);
+    }
     let beenToPlaces = [];
     try {
-      await this.props.getSingleUser(this.props.match.params.id);
+      // await this.props.getSingleUser(this.props.match.params.id);
       console.log(`mounting`, this.props);
 
       await Promise.all(
@@ -104,7 +108,9 @@ class CountryList extends Component {
       .on(`popupopen`, () => {
         document.querySelector(".openPopup").addEventListener(`click`, (e) => {
           e.preventDefault();
-          this.props.history.push(`/dashboard/country/${country.name.common}`);
+          this.props.history.push(
+            `/dashboard/country/${country.name.common}/user/${this.props.singleUser.id}`
+          );
         });
       });
   }
@@ -158,6 +164,7 @@ class CountryList extends Component {
     return (
       <div>
         <Navbar userId={this.props.singleUser.id} />
+        <p>Add Countries You Have Visited To The Map!</p>
         {unvisitedCountries.length !== 0 ? (
           <select
             onChange={this.handleChange}
@@ -177,6 +184,7 @@ class CountryList extends Component {
         ) : (
           <h1>Loading...</h1>
         )}
+
         <button onClick={() => this.addMarker(this.state.countryName)}>
           Submit
         </button>

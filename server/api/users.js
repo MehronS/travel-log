@@ -3,8 +3,24 @@ const router = express.Router();
 const axios = require("axios");
 const { User, Location, PictureAtLocation } = require("../db");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 module.exports = router;
+
+// Token Middleware Function
+const authenticateToken = (req, res, next) => {
+  const token = req.headers["authorization"];
+  // console.log(`from token`, token);
+
+  if (token === null) return res.sendStatus(401);
+
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+    if (err) return res.sendStatus(403);
+    req.userId = user.id;
+    next();
+  });
+};
 
 // /api/users
 
@@ -53,7 +69,11 @@ router
     }
   });
 
+// AUTHENTICATION
+// New Users password hashed in the class hook
+
 // /api/users/login
+
 router.post(`/login`, async (req, res, next) => {
   try {
     console.log(`from api`, req.body);
@@ -64,8 +84,14 @@ router.post(`/login`, async (req, res, next) => {
 
     if (!findUser) res.status(400).send(`Cannot Find User`);
     else if (await bcrypt.compare(req.body.password, findUser.password)) {
-      delete findUser.password;
-      res.send(findUser);
+      findUser.password = `none of your business`;
+
+      // generate token
+      const user = { email: findUser.email, id: findUser.id };
+      console.log(`from login`, user);
+      const accessToken = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET);
+
+      res.setHeader("authorization", accessToken).send(findUser);
     } else {
       res.send(`Not Allowed`);
     }
@@ -75,9 +101,10 @@ router.post(`/login`, async (req, res, next) => {
 });
 
 // /api/users/:id
-router.get(`/:id`, async (req, res, next) => {
+router.get(`/:id`, authenticateToken, async (req, res, next) => {
   try {
-    const user = await User.findByPk(req.params.id, {
+    console.log(`from id`, req.userId);
+    const user = await User.findByPk(req.userId, {
       include: [
         {
           model: Location,

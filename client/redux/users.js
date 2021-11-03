@@ -25,8 +25,10 @@ export const setUserPicturesAtLocation = (pictures) => {
 export const fetchSingleUser = (user) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.post(`/api/users/login`, user);
-
+      const response = await axios.post(`/api/users/login`, user);
+      const data = response.data;
+      const token = response.headers[`authorization`];
+      window.localStorage.setItem(`token`, token);
       dispatch(setSingleUser(data));
     } catch (error) {
       console.error(error);
@@ -35,9 +37,14 @@ export const fetchSingleUser = (user) => {
 };
 
 export const fetchSingleUserWithId = (id) => {
+  const token = window.localStorage.getItem(`token`);
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`api/users/${id}`);
+      const { data } = await axios.get(`api/users/${id}`, {
+        headers: {
+          authorization: token,
+        },
+      });
       dispatch(setSingleUser(data));
     } catch (error) {
       console.error(error);
