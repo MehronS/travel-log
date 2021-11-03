@@ -126,7 +126,7 @@ class SingleCountry extends Component {
           />
         ) : (
           <div>
-            <Navbar />
+            <Navbar userId={this.props.match.params.userId} />
             {country ? (
               <div>
                 <div className="singleCountryDiv">
@@ -146,7 +146,10 @@ class SingleCountry extends Component {
                   </fieldset>
                 </div>
                 <form>
-                  <label>Add Your Pictures</label>
+                  <h3>
+                    Your Photos from {this.props.singleCountry.name.common}
+                  </h3>
+                  <h3>Add More</h3>
                   <input
                     placeholder="Input URL Here"
                     name="imageUrl"
@@ -154,17 +157,8 @@ class SingleCountry extends Component {
                     value={this.state.imageUrl}
                   />
                   <button onClick={(e) => this.handleSubmit(e)}>Submit</button>
-                  <button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      this.props.history.push(
-                        `/dashboard/${this.props.match.params.userId}`
-                      );
-                    }}
-                  >
-                    Back
-                  </button>
                 </form>
+
                 {this.props.userPictures
                   ? this.props.userPictures.map((link) => {
                       return (

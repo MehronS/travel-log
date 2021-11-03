@@ -157,7 +157,7 @@ class CountryList extends Component {
 
     return (
       <div>
-        <Navbar />
+        <Navbar userId={this.props.singleUser.id} />
         {unvisitedCountries.length !== 0 ? (
           <select
             onChange={this.handleChange}

@@ -3,7 +3,14 @@ import React from "react";
 function ModalPictures(props) {
   console.log(props);
   return (
-    <div className="modalDiv" onClick={props.toggleModal}>
+    <div
+      className="modalDiv"
+      onClick={(e) => {
+        if (e.target.className === `modalDiv`) {
+          props.toggleModal();
+        }
+      }}
+    >
       <div className="modalWrapper">
         <img src={props.image.imageUrl} className="modalImage" />
         <div className="modalContent">

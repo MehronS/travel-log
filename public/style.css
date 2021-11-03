@@ -77,7 +77,7 @@ nav {
   background: #fff;
   color: #000;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   position: relative;
   z-index: 10;
   border-radius: 10px;
@@ -97,6 +97,7 @@ nav {
   align-items: center;
   line-height: 1.8;
   color: #141414;
+  max-width: 75%;
 }
 
 .modalPara {
