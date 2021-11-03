@@ -56,14 +56,20 @@ class SingleCountry extends Component {
       <div>
         {country ? (
           <div className="singleCountryDiv">
-            <div id="map" className="singleCountryMap"></div>
-            <div className="singleCountryInfo">
+            <fieldset id="map" className="singleCountryMap"></fieldset>
+
+            <fieldset className="singleCountryInfo">
               <h1>{country.name.common}</h1>
               <img src={country.coatOfArms.png} height="100px" />
               <h3>Capital: {country.capital}</h3>
               <img src={country.flags.png} />
-              <h3>Population: {country.population}</h3>
-            </div>
+              <h3>
+                Population:{" "}
+                {country.population
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </h3>
+            </fieldset>
           </div>
         ) : (
           <p>Loading</p>

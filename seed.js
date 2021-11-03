@@ -1,4 +1,4 @@
-const { db, User, Location } = require("./server/db");
+const { db, User, Location, PictureAtLocation } = require("./server/db");
 
 const locations = [
   {
@@ -43,6 +43,21 @@ const users = [
   },
 ];
 
+const links = [
+  {
+    imageUrl: "www.google.com",
+  },
+  {
+    imageUrl: "www.facebook.com",
+  },
+  {
+    imageUrl: "www.youtube.com",
+  },
+  {
+    imageUrl: "www.twitch.com",
+  },
+];
+
 const seed = async () => {
   try {
     await db.sync({ force: true });
@@ -54,6 +69,10 @@ const seed = async () => {
 
       users.map((user) => {
         return User.create(user);
+      }),
+
+      links.map((link) => {
+        return PictureAtLocation.create(link);
       })
     );
   } catch (error) {
@@ -72,13 +91,19 @@ const seed2 = async () => {
         user.addLocations(allLocations);
       })
     );
+
+    const user1 = await User.findByPk(4);
+    const location1 = await Location.findByPk(3);
+
+    await user1.addPictureAtLocation(await PictureAtLocation.findByPk(3)),
+      await location1.addPictureAtLocation(await PictureAtLocation.findByPk(3));
   } catch (error) {
     console.error(error);
   }
 };
 
 // first run npm seed then change seed to seed2 and run it again... beforeCreate hook is causing the users not to load in time to create associations
-seed()
+seed2()
   .then(() => {
     console.log("Seeding Success!");
   })

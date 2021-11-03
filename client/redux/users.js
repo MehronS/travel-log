@@ -29,7 +29,7 @@ export const fetchSingleUser = (user) => {
 export const fetchSingleUserWithId = (id) => {
   return async (dispatch) => {
     try {
-      const { data } = await axios.get(`api/users/login/${id}`);
+      const { data } = await axios.get(`api/users/${id}`);
       dispatch(setSingleUser(data));
     } catch (error) {
       console.error(error);

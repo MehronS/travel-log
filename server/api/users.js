@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
-const { User, Location } = require("../db");
+const { User, Location, useThis } = require("../db");
 const bcrypt = require("bcrypt");
 
 module.exports = router;
@@ -38,11 +38,15 @@ router.post(`/login`, async (req, res, next) => {
   }
 });
 
-// /api/users/login/:id
-router.get(`/login/:id`, async (req, res, next) => {
+// /api/users/:id
+router.get(`/:id`, async (req, res, next) => {
   try {
     const user = await User.findByPk(req.params.id, {
-      include: [{ model: Location }],
+      include: [
+        {
+          model: Location,
+        },
+      ],
     });
     res.send(user);
   } catch (error) {
