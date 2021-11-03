@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const axios = require("axios");
-const { User, Location, useThis } = require("../db");
+const { User, Location, PictureAtLocation } = require("../db");
 const bcrypt = require("bcrypt");
 
 module.exports = router;
@@ -14,6 +14,19 @@ router.route(`/`).post(async (req, res, next) => {
     res.send(newUser);
   } catch (error) {
     next(error);
+  }
+});
+
+// /api/users/:id/pictures
+router.get("/:id/pictures", async (req, res, next) => {
+  try {
+    const userLocationPics = await PictureAtLocation.findAll({
+      where: { userId: req.params.id, locationId: req.body.id },
+    });
+
+    res.send(userLocationPics);
+  } catch (error) {
+    console.error(error);
   }
 });
 
@@ -45,6 +58,10 @@ router.get(`/:id`, async (req, res, next) => {
       include: [
         {
           model: Location,
+          // fun with nested includes to pinpoint specific pictures and users
+          // include: [
+          //   { model: PictureAtLocation, where: { userId: req.params.id } },
+          // ],
         },
       ],
     });
