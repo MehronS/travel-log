@@ -5,6 +5,7 @@ import {
   fetchAddSingleCountry,
   fetchAllCountries,
   fetchSingleCountry,
+  removeSingleCountryFromUser,
 } from "../redux/countries";
 import { fetchSingleUser, fetchSingleUserWithId } from "../redux/users";
 import Navbar from "./Navbar";
@@ -23,6 +24,7 @@ class CountryList extends Component {
 
     this.addMarker = this.addMarker.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
 
   async componentDidMount() {
@@ -71,7 +73,7 @@ class CountryList extends Component {
         iconSize: [30, 30],
         // iconAnchor: [22, 94],
       });
-      return L.marker([country.latlng[0], country.latlng[1]], {
+      const marker = L.marker([country.latlng[0], country.latlng[1]], {
         icon: myIcon,
       })
         .addTo(myMap)
@@ -89,6 +91,13 @@ class CountryList extends Component {
                 `/dashboard/country/${country.name.common}/user/${this.props.singleUser.id}`
               );
             });
+
+          document
+            .querySelector(".popupDelete")
+            .addEventListener(`click`, () => {
+              this.handleRemove(country.name.common, this.props.singleUser.id);
+              myMap.removeLayer(marker);
+            });
         });
     });
   }
@@ -101,12 +110,14 @@ class CountryList extends Component {
       // iconAnchor: [22, 94],
     });
 
-    L.marker([country.latlng[0], country.latlng[1]], {
+    const marker = L.marker([country.latlng[0], country.latlng[1]], {
       icon: myIcon,
     })
       .addTo(myMap)
       .bindPopup(
-        `<div class="openPopup">${country.flag}${country.name.common}${country.flag}</div>`
+        `<div class="popupDiv">
+        <h3 class="openPopup">${country.flag}${country.name.common}${country.flag}</h3><button class="popupDelete">Remove</button>
+        </div>`
       )
       .on(`popupopen`, () => {
         document.querySelector(".openPopup").addEventListener(`click`, (e) => {
@@ -114,6 +125,11 @@ class CountryList extends Component {
           this.props.history.push(
             `/dashboard/country/${country.name.common}/user/${this.props.singleUser.id}`
           );
+        });
+
+        document.querySelector(".popupDelete").addEventListener(`click`, () => {
+          this.handleRemove(country.name.common, this.props.singleUser.id);
+          myMap.removeLayer(marker);
         });
       });
   }
@@ -152,6 +168,15 @@ class CountryList extends Component {
     });
     console.log(this.state);
   }
+
+  async handleRemove(countryName, userId) {
+    try {
+      await this.props.removeCountry(countryName, userId);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   render() {
     const countryList =
       this.state.beenTo === []
@@ -224,6 +249,8 @@ const mapDispatchToProps = (dispatch) => {
     getSingleUser: (id) => dispatch(fetchSingleUserWithId(id)),
     addSingleCountry: (countryName, id) =>
       dispatch(fetchAddSingleCountry(countryName, id)),
+    removeCountry: (countryName, id) =>
+      dispatch(removeSingleCountryFromUser(countryName, id)),
   };
 };
 

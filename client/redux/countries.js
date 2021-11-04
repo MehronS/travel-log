@@ -56,6 +56,19 @@ export const fetchAddSingleCountry = (countryName, userId) => {
   };
 };
 
+export const removeSingleCountryFromUser = (countryName, userId) => {
+  return async (dispatch) => {
+    try {
+      console.log(`from thunk`, countryName, userId);
+      const { data } = await axios.delete(
+        `api/countries/${countryName}/${userId}`
+      );
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 const initialState = {
   countries: [],
   singleCountry: {},

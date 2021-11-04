@@ -38,7 +38,7 @@ router
         where: { name: req.params.name },
       });
 
-      const updatedUser = await user.addLocations(location[0]);
+      await user.addLocations(location[0]);
 
       const singleCountry = await axios.get(
         `https://restcountries.com/v3.1/name/${req.params.name}`
@@ -49,6 +49,19 @@ router
       next(error);
     }
   });
+
+// /api/countries/:name/:userId
+router.delete(`/:name/:userId`, async (req, res, next) => {
+  try {
+    const userLocation = await Location.findByPk(req.params.name);
+    await userLocation.removeUser(req.params.userId);
+    const user = await User.findByPk(req.params.userId);
+
+    res.send(user);
+  } catch (error) {
+    next(error);
+  }
+});
 
 // error handling middleware
 router.use((err, req, res, next) => {

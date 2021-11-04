@@ -1,4 +1,5 @@
 import axios from "axios";
+import { fetchSingleCountry } from "./countries";
 
 // Action Types
 
@@ -108,6 +109,21 @@ export const deleteUserPictureAtLocation = (imageId) => {
     }
   };
 };
+
+// export const removeSingleCountryFromUser = (countryName, userId) => {
+//   return async (dispatch) => {
+//     try {
+//       console.log(`from thunk`, countryName, userId);
+//       const { data } = await axios.delete(
+//         `api/countries/${countryName}/${userId}`
+//       );
+
+//       dispatch(fetchSingleCountry(data));
+//     } catch (error) {
+//       console.error(error);
+//     }
+//   };
+// };
 
 const initialState = {
   singleUser: {},
