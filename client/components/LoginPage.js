@@ -7,13 +7,13 @@ class LoginPage extends Component {
   constructor() {
     super();
     this.state = {
-      email: ``,
-      password: ``,
+      email: `mehrons@gmail.com`,
+      password: `1111`,
       firstName: ``,
       lastName: ``,
       newEmail: ``,
       newPass: ``,
-      showModal: true,
+      showModal: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -76,10 +76,13 @@ class LoginPage extends Component {
           />
         ) : (
           <div className="login_view">
-            <fieldset className="login_fieldset">
-              <legend>Login</legend>
+            <div className="login_fieldset">
+              <h3>Login</h3>
+              <br />
+
               <div className="form__input">
                 <input
+                  className="login_input"
                   name="email"
                   value={this.state.email}
                   onChange={this.handleChange}
@@ -89,6 +92,7 @@ class LoginPage extends Component {
               </div>
               <div className="form__input">
                 <input
+                  className="login_input"
                   name="password"
                   value={this.state.password}
                   onChange={this.handleChange}
@@ -97,11 +101,15 @@ class LoginPage extends Component {
               </div>
 
               <div className="login_buttons_div">
-                <button onClick={this.handleSignin}>Log In</button>
+                <button onClick={this.handleSignin} className="login_buttons">
+                  Log In
+                </button>
 
-                <button onClick={this.toggleModal}>Create Account</button>
+                <button onClick={this.toggleModal} className="login_buttons">
+                  Create Account
+                </button>
               </div>
-            </fieldset>
+            </div>
           </div>
         )}
       </div>
