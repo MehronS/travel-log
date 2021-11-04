@@ -1,22 +1,25 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchCreatedUser, fetchSingleUser } from "../redux/users";
+import CreateAccount from "./CreateAccount";
 
 class LoginPage extends Component {
   constructor() {
     super();
     this.state = {
-      email: "mehrons@gmail.com",
-      password: "1111",
+      email: ``,
+      password: ``,
       firstName: ``,
       lastName: ``,
       newEmail: ``,
       newPass: ``,
+      showModal: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSignin = this.handleSignin.bind(this);
     this.handleCreate = this.handleCreate.bind(this);
+    this.toggleModal = this.toggleModal.bind(this);
   }
 
   componentDidUpdate(prevProps) {
@@ -57,70 +60,50 @@ class LoginPage extends Component {
     }
   }
 
+  toggleModal() {
+    this.setState({ showModal: !this.state.showModal });
+  }
+
   render() {
-    // console.log(`from login render`, this.props);
     return (
       <div>
-        <fieldset>
-          <legend>Login</legend>
-          <label>Email</label>
-          <br />
-          <input
-            name="email"
-            value={this.state.email}
-            onChange={this.handleChange}
+        {this.state.showModal ? (
+          <CreateAccount
+            toggleModal={this.toggleModal}
+            handleCreate={this.handleCreate}
+            state={this.state}
+            handleChange={this.handleChange}
           />
-          <br />
-          <label>Password</label>
-          <br />
-          <input
-            name="password"
-            value={this.state.password}
-            onChange={this.handleChange}
-          />
-          <div className="login_buttons_div">
-            <br />
-            <button onClick={this.handleSignin}>Sign In</button>
+        ) : (
+          <div className="login_view">
+            <fieldset className="login_fieldset">
+              <legend>Login</legend>
+              <div className="form__input">
+                <input
+                  name="email"
+                  value={this.state.email}
+                  onChange={this.handleChange}
+                  autoFocus
+                  placeholder="Email"
+                />
+              </div>
+              <div className="form__input">
+                <input
+                  name="password"
+                  value={this.state.password}
+                  onChange={this.handleChange}
+                  placeholder="Password"
+                />
+              </div>
+
+              <div className="login_buttons_div">
+                <button onClick={this.handleSignin}>Log In</button>
+
+                <button onClick={this.toggleModal}>Create Account</button>
+              </div>
+            </fieldset>
           </div>
-        </fieldset>
-        <fieldset>
-          <legend>Create Account</legend>
-          <label>First Name</label>
-          <br />
-          <input
-            name="firstName"
-            value={this.state.firstName}
-            onChange={this.handleChange}
-          />
-          <br />
-          <label>Last Name</label>
-          <br />
-          <input
-            name="lastName"
-            value={this.state.lastName}
-            onChange={this.handleChange}
-          />
-          <br />
-          <label>Email</label>
-          <br />
-          <input
-            name="newEmail"
-            value={this.state.newEmail}
-            onChange={this.handleChange}
-          />
-          <br />
-          <label>Password</label>
-          <br />
-          <input
-            name="newPass"
-            value={this.state.newPass}
-            onChange={this.handleChange}
-          />
-          <div className="login_buttons_div">
-            <br />
-            <button onClick={this.handleCreate}>Create Account</button>
-          </div>
-        </fieldset>
+        )}
       </div>
     );
   }

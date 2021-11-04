@@ -158,19 +158,21 @@ class SingleCountry extends Component {
                   <button onClick={(e) => this.handleSubmit(e)}>Submit</button>
                 </form>
 
-                {this.props.userPictures
-                  ? this.props.userPictures.map((link) => {
-                      return (
-                        <fieldset key={link.id} className="imageField">
-                          <img
-                            src={link.imageUrl}
-                            className="countryImages"
-                            onClick={() => this.toggleModal(link.id)}
-                          />
-                        </fieldset>
-                      );
-                    })
-                  : null}
+                <div className="imageDiv">
+                  {this.props.userPictures
+                    ? this.props.userPictures.map((link) => {
+                        return (
+                          <fieldset key={link.id} className="imageField">
+                            <img
+                              src={link.imageUrl}
+                              className="countryImages"
+                              onClick={() => this.toggleModal(link.id)}
+                            />
+                          </fieldset>
+                        );
+                      })
+                    : null}
+                </div>
               </div>
             ) : (
               <p>Loading</p>

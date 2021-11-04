@@ -27,34 +27,38 @@ class CountryList extends Component {
 
   async componentDidMount() {
     const token = window.localStorage.getItem(`token`);
-    if (token) {
-      await this.props.getSingleUser(this.props.match.params.id);
-    }
+
     let beenToPlaces = [];
     try {
-      await Promise.all(
-        this.props.singleUser.locations.map(async (location) => {
-          const { data } = await axios.get(
-            `https://restcountries.com/v3.1/name/${location.name}`
-          );
-          beenToPlaces.push(...data);
-        })
-      );
+      if (token) {
+        await this.props.getSingleUser(this.props.match.params.id);
+        await Promise.all(
+          this.props.singleUser.locations.map(async (location) => {
+            const { data } = await axios.get(
+              `https://restcountries.com/v3.1/name/${location.name}`
+            );
+            beenToPlaces.push(...data);
+          })
+        );
 
-      await this.props.getAllCountries();
-      let sorted = [...this.props.countries];
-      sorted = sorted.sort((a, b) => {
-        if (a.name.common < b.name.common) return -1;
-        if (a.name.common > b.name.common) return 1;
-        return 0;
-      });
-      this.loadmap();
-      this.setState({
-        allCountries: sorted,
-        beenTo: beenToPlaces,
-      });
+        await this.props.getAllCountries();
+        let sorted = [...this.props.countries];
+        sorted = sorted.sort((a, b) => {
+          if (a.name.common < b.name.common) return -1;
+          if (a.name.common > b.name.common) return 1;
+          return 0;
+        });
+        this.loadmap();
+        this.setState({
+          allCountries: sorted,
+          beenTo: beenToPlaces,
+        });
 
-      this.loadMarkers();
+        this.loadMarkers();
+      } else {
+        alert(`nah fam`);
+        this.props.history.push(`/`);
+      }
     } catch (error) {
       console.error(error);
     }
