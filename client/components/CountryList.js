@@ -76,7 +76,9 @@ class CountryList extends Component {
       })
         .addTo(myMap)
         .bindPopup(
-          `<div class="openPopup">${country.flag}${country.name.common}${country.flag}</div>`
+          `<div class="popupDiv">
+          <h3 class="openPopup">${country.flag}${country.name.common}${country.flag}</h3><button class="popupDelete">Remove</button>
+          </div>`
         )
         .on(`popupopen`, () => {
           document
@@ -166,33 +168,40 @@ class CountryList extends Component {
     return (
       <div>
         <Navbar userId={this.props.singleUser.id} />
-        <p>
-          Welcome, {this.props.singleUser.firstName}! Add Countries You Have
-          Visited!
-        </p>
-        {unvisitedCountries.length !== 0 ? (
-          <select
-            onChange={this.handleChange}
-            value={this.state.countryName}
-            name="countryName"
-          >
-            <option></option>
-            {unvisitedCountries.map((country) => {
-              counter++;
-              return (
-                <option key={counter} value={country.name.common}>
-                  {country.name.common}
-                </option>
-              );
-            })}
-          </select>
-        ) : (
-          <h1>Loading...</h1>
-        )}
+        <div className="country_selector_div">
+          <p>
+            Welcome, {this.props.singleUser.firstName}! Add Countries You Have
+            Visited!
+          </p>
+          <div>
+            {unvisitedCountries.length !== 0 ? (
+              <select
+                onChange={this.handleChange}
+                value={this.state.countryName}
+                name="countryName"
+              >
+                <option></option>
+                {unvisitedCountries.map((country) => {
+                  counter++;
+                  return (
+                    <option key={counter} value={country.name.common}>
+                      {country.name.common}
+                    </option>
+                  );
+                })}
+              </select>
+            ) : (
+              <h1>Loading...</h1>
+            )}
 
-        <button onClick={() => this.addMarker(this.state.countryName)}>
-          Submit
-        </button>
+            <button
+              onClick={() => this.addMarker(this.state.countryName)}
+              className="login_buttons"
+            >
+              Submit
+            </button>
+          </div>
+        </div>
         <div id="map" className="mainMap"></div>
       </div>
     );

@@ -99,6 +99,16 @@ export const updateUserPicturesAtLocation = (userId, locationInfo) => {
   };
 };
 
+export const deleteUserPictureAtLocation = (imageId) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`/api/pictures/${imageId}`);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 const initialState = {
   singleUser: {},
   userPicturesAtLocation: [],

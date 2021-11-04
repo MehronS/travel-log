@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchSingleCountry } from "../redux/countries";
 import {
+  deleteUserPictureAtLocation,
   fetchSingleUser,
   fetchUserPicturesAtLocation,
   updateUserPicturesAtLocation,
@@ -24,6 +25,7 @@ class SingleCountry extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   async componentDidMount() {
@@ -106,9 +108,19 @@ class SingleCountry extends Component {
     if (this.state.showModal)
       setTimeout(() => {
         this.loadmap();
+        this.loadMarker();
       }, 50);
+  }
 
-    console.log(`from toggle`, this.state);
+  async handleDelete(id) {
+    const locationName = { locationName: this.props.match.params.name };
+    const userId = this.props.match.params.userId;
+    try {
+      await this.props.deletePicture(id);
+      await this.props.getUserPictures(userId, locationName);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   render() {
@@ -160,13 +172,19 @@ class SingleCountry extends Component {
 
                 <div className="imageDiv">
                   {this.props.userPictures
-                    ? this.props.userPictures.map((link) => {
+                    ? this.props.userPictures.map((image) => {
                         return (
-                          <fieldset key={link.id} className="imageField">
+                          <fieldset key={image.id} className="imageField">
+                            <button
+                              className="delete_button_picture"
+                              onClick={() => this.handleDelete(image.id)}
+                            >
+                              Delete
+                            </button>
                             <img
-                              src={link.imageUrl}
+                              src={image.imageUrl}
                               className="countryImages"
-                              onClick={() => this.toggleModal(link.id)}
+                              onClick={() => this.toggleModal(image.id)}
                             />
                           </fieldset>
                         );
@@ -201,6 +219,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(fetchUserPicturesAtLocation(userId, locationName)),
     updatePictures: (userId, pictureInfo) =>
       dispatch(updateUserPicturesAtLocation(userId, pictureInfo)),
+    deletePicture: (id) => dispatch(deleteUserPictureAtLocation(id)),
   };
 };
 

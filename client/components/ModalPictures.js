@@ -1,7 +1,6 @@
 import React from "react";
 
 function ModalPictures(props) {
-  console.log(props);
   return (
     <div
       className="modalDiv"

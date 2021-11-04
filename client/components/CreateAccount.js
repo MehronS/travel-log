@@ -2,7 +2,14 @@ import React from "react";
 
 function CreateAccount(props) {
   return (
-    <div className="modalDiv">
+    <div
+      className="modalDiv"
+      onClick={(e) => {
+        if (e.target.className === `modalDiv`) {
+          props.toggleModal();
+        }
+      }}
+    >
       <div className="create_modal_wrapper">
         <h3>Create Account</h3>
 
