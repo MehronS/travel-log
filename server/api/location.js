@@ -28,8 +28,8 @@ router.get(`/trip/:name/`, async (req, res, next) => {
         url: `https://api.roadgoat.com/api/v2/destinations/auto_complete?q=${req.params.name}`,
         method: `GET`,
         auth: {
-          username: `258ed1f88d4fb64cf02385c4e0432048`,
-          password: `2c7ef3b0b8374ccc3b2d94c9d37382fe`,
+          username: process.env.USERNAME,
+          password: process.env.PASSWORD,
         },
       });
 
@@ -37,8 +37,8 @@ router.get(`/trip/:name/`, async (req, res, next) => {
         url: `https://api.roadgoat.com/api/v2/destinations/${justToGetId.data.data[0].id}`,
         method: `GET`,
         auth: {
-          username: `258ed1f88d4fb64cf02385c4e0432048`,
-          password: `2c7ef3b0b8374ccc3b2d94c9d37382fe`,
+          username: process.env.USERNAME,
+          password: process.env.PASSWORD,
         },
       });
       let placeholder = location;
