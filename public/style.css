@@ -284,8 +284,8 @@ nav {
 
 .trip_info {
   display: flex;
-  /* justify-content: space-around; */
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .to_consider {
@@ -300,11 +300,15 @@ nav {
   display: flex;
   flex: 1;
   margin-top: 10px;
+  justify-content: space-between;
 }
 
 .trip_links {
   margin-top: 250px;
-  gap: 400px;
+  gap: 100px;
+  display: flex;
+  justify-content: space-evenly;
+  flex-grow: 1;
 }
 
 .cost_div,

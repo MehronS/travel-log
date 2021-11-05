@@ -125,7 +125,7 @@ class TripPlanner extends Component {
                 </div>
               </fieldset>
 
-              <div className="visit_cities to_consider">
+              <div className="visit_cities">
                 <h2>Cities To Visit!</h2>
                 {tripInfo.attributes.top_cities_and_towns.map((city) => {
                   return (
@@ -134,30 +134,29 @@ class TripPlanner extends Component {
                     </div>
                   );
                 })}
-
-                <div className="to_consider trip_links">
-                  <h4>
-                    <a
-                      href={tripInfo.attributes.google_events_url}
-                      target="_blank"
-                    >
-                      Upcoming Events
-                    </a>
-                  </h4>
-                  <h4>
-                    <a
-                      href={tripInfo.attributes.getyourguide_url}
-                      target="_blank"
-                    >
-                      Get Your Guide
-                    </a>
-                  </h4>
-                  <h4>
-                    <a href={tripInfo.attributes.airbnb_url} target="_blank">
-                      Airbnb
-                    </a>
-                  </h4>
-                </div>
+              </div>
+              <div className="trip_links">
+                <h4>
+                  <a
+                    href={tripInfo.attributes.google_events_url}
+                    target="_blank"
+                  >
+                    Upcoming Events
+                  </a>
+                </h4>
+                <h4>
+                  <a
+                    href={tripInfo.attributes.getyourguide_url}
+                    target="_blank"
+                  >
+                    Get Your Guide
+                  </a>
+                </h4>
+                <h4>
+                  <a href={tripInfo.attributes.airbnb_url} target="_blank">
+                    Airbnb
+                  </a>
+                </h4>
               </div>
             </div>
           </div>
