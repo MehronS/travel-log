@@ -92,6 +92,7 @@ class LoginPage extends Component {
               </div>
               <div className="form__input">
                 <input
+                  type="password"
                   className="login_input"
                   name="password"
                   value={this.state.password}

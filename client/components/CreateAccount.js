@@ -38,6 +38,7 @@ function CreateAccount(props) {
         />
 
         <input
+          type="password"
           placeholder="Password"
           className="create_inputs"
           name="newPass"
