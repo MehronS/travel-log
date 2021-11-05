@@ -3,6 +3,7 @@ import axios from "axios";
 // Action Types
 const SET_ALL_COUNTRIES = `SET_ALL_COUNTRIES`;
 const SET_SINGLE_COUNTRY = `SET_SINGLE_COUNTRY`;
+const SET_TRIP_INFO = `SET_TRIP_INFO`;
 
 // Action Creators
 export const setCountries = (countries) => {
@@ -16,6 +17,13 @@ export const setSingleCountry = (singleCountry) => {
   return {
     type: SET_SINGLE_COUNTRY,
     singleCountry,
+  };
+};
+
+export const setTripInfo = (tripInfo) => {
+  return {
+    type: SET_TRIP_INFO,
+    tripInfo,
   };
 };
 
@@ -56,13 +64,11 @@ export const fetchAddSingleCountry = (countryName, userId) => {
   };
 };
 
-export const removeSingleCountryFromUser = (countryName, userId) => {
+export const fetchTripCountryInfo = (countryName) => {
   return async (dispatch) => {
     try {
-      console.log(`from thunk`, countryName, userId);
-      const { data } = await axios.delete(
-        `api/countries/${countryName}/${userId}`
-      );
+      const { data } = await axios.get(`/api/countries/trip/${countryName}/`);
+      dispatch(setTripInfo(data));
     } catch (error) {
       console.error(error);
     }
@@ -72,6 +78,7 @@ export const removeSingleCountryFromUser = (countryName, userId) => {
 const initialState = {
   countries: [],
   singleCountry: {},
+  tripInfo: {},
 };
 
 export default (state = initialState, action) => {
@@ -80,6 +87,8 @@ export default (state = initialState, action) => {
       return { ...state, countries: action.countries };
     case SET_SINGLE_COUNTRY:
       return { ...state, singleCountry: action.singleCountry[0] };
+    case SET_TRIP_INFO:
+      return { ...state, tripInfo: action.tripInfo };
     default:
       return state;
   }

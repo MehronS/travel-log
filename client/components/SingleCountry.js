@@ -9,6 +9,7 @@ import {
 } from "../redux/users";
 import ModalPictures from "./ModalPictures";
 import Navbar from "./Navbar";
+import TripPlanner from "./TripPlanner";
 
 let myMap;
 
@@ -20,12 +21,14 @@ class SingleCountry extends Component {
       imageUrl: ``,
       showModal: false,
       singleImage: ``,
+      tripPlan: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.toggleModal = this.toggleModal.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
+    this.planTrip = this.planTrip.bind(this);
   }
 
   async componentDidMount() {
@@ -39,7 +42,6 @@ class SingleCountry extends Component {
         this.setState({ singleCountry: this.props.singleCountry });
 
         this.loadmap();
-        this.loadMarker();
       } else {
         alert(`nah fam`);
         this.props.history.push(`/`);
@@ -61,6 +63,8 @@ class SingleCountry extends Component {
     L.tileLayer("https://{s}.tile.openstreetmap.fr/hot//{z}/{x}/{y}.png").addTo(
       myMap
     );
+
+    this.loadMarker();
   }
 
   loadMarker() {
@@ -123,6 +127,10 @@ class SingleCountry extends Component {
     }
   }
 
+  planTrip() {
+    this.setState({ tripPlan: !this.state.tripPlan });
+  }
+
   render() {
     const country = this.state.singleCountry
       ? this.state.singleCountry
@@ -130,7 +138,13 @@ class SingleCountry extends Component {
 
     return (
       <div>
-        {this.state.showModal ? (
+        {this.state.tripPlan ? (
+          <TripPlanner
+            planTrip={this.planTrip}
+            country={this.props.singleCountry}
+            user={this.props.singleUser}
+          />
+        ) : this.state.showModal ? (
           <ModalPictures
             image={this.state.singleImage}
             toggleModal={this.toggleModal}
@@ -156,39 +170,57 @@ class SingleCountry extends Component {
                     </h3>
                   </fieldset>
                 </div>
-                <form>
-                  <h3>
-                    Your Photos from {this.props.singleCountry.name.common}
-                  </h3>
+                <fieldset className="single_country_input_div">
+                  <h3>Your Photos from {country.name.common}!!</h3>
                   <h3>Add More</h3>
-                  <input
-                    placeholder="Input URL Here"
-                    name="imageUrl"
-                    onChange={this.handleChange}
-                    value={this.state.imageUrl}
-                  />
-                  <button onClick={(e) => this.handleSubmit(e)}>Submit</button>
-                </form>
+                  <div>
+                    <input
+                      autoFocus
+                      placeholder="Input URL Here"
+                      name="imageUrl"
+                      className="imageUrl"
+                      onChange={this.handleChange}
+                      value={this.state.imageUrl}
+                    />
+                    <button onClick={(e) => this.handleSubmit(e)}>
+                      Submit
+                    </button>
+                  </div>
+                  <div className="plan_trip_div">
+                    <button
+                      className="plan_trip_button"
+                      onClick={() =>
+                        this.props.history.push(
+                          `/plan-trip/${country.name.common}/${this.props.match.params.userId}`
+                        )
+                      }
+                    >
+                      Plan A Trip to {country.name.common}!
+                    </button>
+                  </div>
+                </fieldset>
 
                 <div className="imageDiv">
                   {this.props.userPictures
-                    ? this.props.userPictures.map((image) => {
-                        return (
-                          <fieldset key={image.id} className="imageField">
-                            <button
-                              className="delete_button_picture"
-                              onClick={() => this.handleDelete(image.id)}
-                            >
-                              Delete
-                            </button>
-                            <img
-                              src={image.imageUrl}
-                              className="countryImages"
-                              onClick={() => this.toggleModal(image.id)}
-                            />
-                          </fieldset>
-                        );
-                      })
+                    ? this.props.userPictures
+                        .sort((a, b) => a.id - b.id)
+                        .map((image) => {
+                          return (
+                            <fieldset key={image.id} className="imageField">
+                              <button
+                                className="delete_button_picture"
+                                onClick={() => this.handleDelete(image.id)}
+                              >
+                                Delete
+                              </button>
+                              <img
+                                src={image.imageUrl}
+                                className="countryImages"
+                                onClick={() => this.toggleModal(image.id)}
+                              />
+                            </fieldset>
+                          );
+                        })
                     : null}
                 </div>
               </div>

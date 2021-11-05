@@ -15,6 +15,44 @@ router.route(`/`).get(async (req, res, next) => {
   }
 });
 
+// /api/countries/trip/:name/
+router.get(`/trip/:name/`, async (req, res, next) => {
+  try {
+    const location = await Location.findOrCreate({
+      where: { name: req.params.name },
+    });
+
+    // To store from limited APIs
+    if (location[0].locationInfo === null) {
+      const justToGetId = await axios({
+        url: `https://api.roadgoat.com/api/v2/destinations/auto_complete?q=${req.params.name}`,
+        method: `GET`,
+        auth: {
+          username: `258ed1f88d4fb64cf02385c4e0432048`,
+          password: `2c7ef3b0b8374ccc3b2d94c9d37382fe`,
+        },
+      });
+
+      const place = await axios({
+        url: `https://api.roadgoat.com/api/v2/destinations/${justToGetId.data.data[0].id}`,
+        method: `GET`,
+        auth: {
+          username: `258ed1f88d4fb64cf02385c4e0432048`,
+          password: `2c7ef3b0b8374ccc3b2d94c9d37382fe`,
+        },
+      });
+      let placeholder = location;
+      placeholder.locationInfo = JSON.stringify(place.data);
+      const updatedLocation = await location[0].update(placeholder);
+      res.send(JSON.parse(updatedLocation.locationInfo));
+    } else {
+      res.send(JSON.parse(location[0].locationInfo));
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
 // /api/countries/:name
 router
   .route(`/:name`)

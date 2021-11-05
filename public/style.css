@@ -93,10 +93,28 @@ nav {
 
 .imageField {
   flex-grow: 1;
-  width: 33%;
+  max-width: 33.33%;
   height: 300px;
   background-color: black;
   position: relative;
+}
+
+.single_country_input_div {
+  display: flex;
+  gap: 10px;
+}
+
+.plan_trip_div {
+  margin-left: auto;
+}
+
+.plan_trip_button {
+  background: chartreuse;
+  font-weight: bold;
+}
+
+.imageUrl {
+  width: 500px;
 }
 
 .delete_button_picture {
@@ -245,4 +263,20 @@ nav {
   background: none;
   margin-right: 5px;
   margin-left: 5px;
+}
+
+.trip_info {
+  display: flex;
+  justify-content: space-around;
+}
+
+.to_consider {
+  background: url("./consider.jpeg");
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  min-height: 100%;
+}
+
+.to_consider > * {
 }

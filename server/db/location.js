@@ -10,6 +10,15 @@ const Location = db.define("location", {
       notEmpty: true,
     },
   },
+
+  rating: {
+    type: Sequelize.INTEGER,
+    defaultValue: 5,
+  },
+
+  locationInfo: {
+    type: Sequelize.TEXT,
+  },
 });
 
 module.exports = Location;
