@@ -70,6 +70,37 @@ class CountryList extends Component {
     }
   }
 
+  // async componentDidUpdate(prevProps) {
+  // let beenToPlaces = [];
+  // try {
+  //   if (prevProps.singleUser.locations !== this.state.singleUser.locations) {
+  //     await this.props.getSingleUser(this.props.match.params.id);
+  //     await Promise.all(
+  //       this.props.singleUser.locations.map(async (location) => {
+  //         const { data } = await axios.get(
+  //           `https://restcountries.com/v3.1/name/${location.name}`
+  //         );
+  //         beenToPlaces.push(...data);
+  //       })
+  //     );
+
+  //       await this.props.getAllCountries();
+  //       let sorted = [...this.props.countries];
+  //       sorted = sorted.sort((a, b) => {
+  //         if (a.name.common < b.name.common) return -1;
+  //         if (a.name.common > b.name.common) return 1;
+  //         return 0;
+  //       });
+  //       this.setState({
+  //         allCountries: sorted,
+  //         beenTo: beenToPlaces,
+  //       });
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // }
+
   loadMarkers() {
     this.state.beenTo.map((country) => {
       let myIcon = L.icon({
@@ -174,6 +205,19 @@ class CountryList extends Component {
   async handleRemove(countryName, userId) {
     try {
       await this.props.removeCountry(countryName, userId);
+      let beenToPlaces = [];
+
+      await this.props.getSingleUser(this.props.match.params.id);
+      await Promise.all(
+        this.props.singleUser.locations.map(async (location) => {
+          const { data } = await axios.get(
+            `https://restcountries.com/v3.1/name/${location.name}`
+          );
+          beenToPlaces.push(...data);
+        })
+      );
+
+      this.setState({ beenTo: beenToPlaces, countryName: `` });
     } catch (error) {
       console.error(error);
     }

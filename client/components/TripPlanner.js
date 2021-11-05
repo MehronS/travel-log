@@ -80,7 +80,11 @@ class TripPlanner extends Component {
               <fieldset id="map" className="singleCountryMap"></fieldset>
 
               <fieldset className="singleCountryInfo">
-                <h1>{country.name.common}</h1>
+                <h1>
+                  <a href={tripInfo.attributes.wikipedia_url} target="_blank">
+                    {country.name.common}
+                  </a>
+                </h1>
                 <img src={country.coatOfArms.png} height="100px" />
                 <h3>Capital: {country.capital}</h3>
                 <img src={country.flags.png} />
@@ -99,7 +103,7 @@ class TripPlanner extends Component {
                   ))}{" "}
                 </h3>
                 <h3>
-                  Covid Info:{" "}
+                  Covid Status:{" "}
                   <a
                     href={`${tripInfo.attributes.covid[countryName].url}`}
                     target="_blank"
