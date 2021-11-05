@@ -70,8 +70,10 @@ class TripPlanner extends Component {
 
     return (
       <div>
-        {tripInfo ? (
-          <div>
+        {!tripInfo ? (
+          <h3>Loading...</h3>
+        ) : (
+          <div className="trip_plan_div">
             <Navbar userId={this.props.match.params.userId} />
             <div className="singleCountryDiv">
               <fieldset id="map" className="singleCountryMap"></fieldset>
@@ -84,8 +86,7 @@ class TripPlanner extends Component {
               </fieldset>
             </div>
             <div className="trip_info">
-              <div className="to_consider">
-                <h2>Thing To Consider!</h2>
+              <fieldset className="to_consider">
                 <h3>
                   Average Rating:{" "}
                   {tripInfo.attributes.average_rating.toFixed(2)}
@@ -105,53 +106,52 @@ class TripPlanner extends Component {
                     {tripInfo.attributes.covid[countryName].text}
                   </a>
                 </h3>
-                <div>
+                <div className="safety_div">
                   <h3>
                     Safety: {tripInfo.attributes.safety[countryName].text}
                   </h3>
                   <h4>{tripInfo.attributes.safety[countryName].subText}</h4>
                 </div>
-                <div>
+                <div className="cost_div">
                   <h3>
                     Average Cost: {tripInfo.attributes.budget[countryName].text}
                   </h3>
                   <h4>{tripInfo.attributes.budget[countryName].subText}</h4>
                 </div>
-              </div>
-              <div>
+              </fieldset>
+
+              <fieldset className="visit_cities to_consider">
                 <h2>Cities To Visit!</h2>
                 {tripInfo.attributes.top_cities_and_towns.map((city) => {
-                  return <p key={city.id}>{city.name.split(`,`)[0]}</p>;
+                  return <div key={city.id}>{city.name.split(`,`)[0]}</div>;
                 })}
-              </div>
-              <div>
-                <h2>Plan Your Trip!</h2>
-                <h4>
-                  <a
-                    href={tripInfo.attributes.google_events_url}
-                    target="_blank"
-                  >
-                    Upcoming Events
-                  </a>
-                </h4>
-                <h4>
-                  <a
-                    href={tripInfo.attributes.getyourguide_url}
-                    target="_blank"
-                  >
-                    Get Your Guide
-                  </a>
-                </h4>
-                <h3>
-                  <a href={tripInfo.attributes.airbnb_url} target="_blank">
-                    Book Your Stay
-                  </a>
-                </h3>
-              </div>
+
+                <div className="to_consider trip_links">
+                  <h4>
+                    <a
+                      href={tripInfo.attributes.google_events_url}
+                      target="_blank"
+                    >
+                      Upcoming Events
+                    </a>
+                  </h4>
+                  <h4>
+                    <a
+                      href={tripInfo.attributes.getyourguide_url}
+                      target="_blank"
+                    >
+                      Get Your Guide
+                    </a>
+                  </h4>
+                  <h4>
+                    <a href={tripInfo.attributes.airbnb_url} target="_blank">
+                      Airbnb
+                    </a>
+                  </h4>
+                </div>
+              </fieldset>
             </div>
           </div>
-        ) : (
-          <h3>Loading...</h3>
         )}
       </div>
     );

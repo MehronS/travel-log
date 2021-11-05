@@ -6,7 +6,7 @@
 }
 
 body {
-  height: 100vh;
+  min-height: 100vh;
   overflow-x: hidden;
 }
 
@@ -102,6 +102,7 @@ nav {
 .single_country_input_div {
   display: flex;
   gap: 10px;
+  background: cyan;
 }
 
 .plan_trip_div {
@@ -265,18 +266,38 @@ nav {
   margin-left: 5px;
 }
 
-.trip_info {
-  display: flex;
-  justify-content: space-around;
-}
-
-.to_consider {
-  background: url("./consider.jpeg");
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+.trip_plan_div {
   min-height: 100%;
 }
 
-.to_consider > * {
+.trip_info {
+  display: flex;
+  /* justify-content: space-around; */
+  flex-direction: column;
+}
+
+.to_consider {
+  background: cyan;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  min-height: 100%;
+  align-items: center;
+}
+
+.visit_cities {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  background: cyan;
+}
+
+.trip_links {
+  margin: 39.7px;
+  gap: 400px;
+}
+
+.cost_div,
+.safety_div {
+  text-align: center;
 }
