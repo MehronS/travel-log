@@ -7,6 +7,7 @@ import {
   fetchUserPicturesAtLocation,
   updateUserPicturesAtLocation,
 } from "../redux/users";
+import LoadingSpinner from "./LoadingSpinner";
 import ModalPictures from "./ModalPictures";
 import Navbar from "./Navbar";
 import TripPlanner from "./TripPlanner";
@@ -225,7 +226,7 @@ class SingleCountry extends Component {
                 </div>
               </div>
             ) : (
-              <p>Loading</p>
+              <LoadingSpinner />
             )}
           </div>
         )}

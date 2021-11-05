@@ -8,6 +8,7 @@
 body {
   min-height: 100vh;
   overflow-x: hidden;
+  background: url("./loginImage.jpeg");
 }
 
 .mainMap {
@@ -63,11 +64,14 @@ body {
 .country_selector_div {
   display: flex;
   justify-content: space-between;
-  background: rgb(8, 206, 189);
+
   flex-direction: row-reverse;
   padding-left: 10px;
   padding-right: 10px;
   font-weight: 900;
+
+  background: #333333;
+  color: white;
 }
 
 nav {
@@ -102,7 +106,10 @@ nav {
 .single_country_input_div {
   display: flex;
   gap: 10px;
-  background: cyan;
+}
+
+.country_list_div {
+  background: url("./loginImage.jpeg");
 }
 
 .plan_trip_div {
@@ -266,6 +273,11 @@ nav {
   margin-left: 5px;
 }
 
+.country_list_button {
+  color: white;
+  margin-bottom: 10px;
+}
+
 .trip_plan_div {
   min-height: 100%;
 }
@@ -277,7 +289,6 @@ nav {
 }
 
 .to_consider {
-  background: cyan;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
@@ -288,16 +299,56 @@ nav {
 .visit_cities {
   display: flex;
   flex: 1;
-  flex-direction: column;
-  background: cyan;
+  margin-top: 10px;
 }
 
 .trip_links {
-  margin: 39.7px;
+  margin-top: 250px;
   gap: 400px;
 }
 
 .cost_div,
 .safety_div {
   text-align: center;
+}
+
+.city {
+  font-weight: bold;
+  color: black;
+  margin: 5px;
+}
+
+a {
+  color: blue;
+  text-decoration: none;
+}
+
+/* Load Spinner */
+.loader_div {
+  background: url("./loginImage.jpeg");
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader {
+  border-top: 16px solid yellow;
+  border-right: 16px solid green;
+  border-bottom: 16px solid red;
+  border-left: 16px solid blue;
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }

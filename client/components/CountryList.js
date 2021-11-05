@@ -10,6 +10,7 @@ import {
   fetchSingleUserWithId,
   removeSingleCountryFromUser,
 } from "../redux/users";
+import LoadingSpinner from "./LoadingSpinner";
 import Navbar from "./Navbar";
 
 let counter = 0;
@@ -53,12 +54,12 @@ class CountryList extends Component {
           if (a.name.common > b.name.common) return 1;
           return 0;
         });
-        this.loadmap();
         this.setState({
           allCountries: sorted,
           beenTo: beenToPlaces,
         });
 
+        this.loadmap();
         this.loadMarkers();
       } else {
         alert(`nah fam`);
@@ -68,23 +69,6 @@ class CountryList extends Component {
       console.error(error);
     }
   }
-
-  // async componentDidUpdate(prevProps) {
-  //   if (prevProps.singleUser !== this.props.singleUser) {
-  //     this.setState({ singleUser: this.props.singleUser });
-  //     await this.props.getAllCountries();
-  //     let sorted = [...this.props.countries];
-  //     sorted = sorted.sort((a, b) => {
-  //       if (a.name.common < b.name.common) return -1;
-  //       if (a.name.common > b.name.common) return 1;
-  //       return 0;
-  //     });
-
-  //     this.setState({
-  //       allCountries: sorted,
-  //     });
-  //   }
-  // }
 
   loadMarkers() {
     this.state.beenTo.map((country) => {
@@ -210,42 +194,47 @@ class CountryList extends Component {
 
     return (
       <div>
-        <Navbar userId={this.props.singleUser.id} />
-        <div className="country_selector_div">
-          <p>
-            Welcome, {this.props.singleUser.firstName}! Add Countries You Have
-            Visited or Want to Visit!
-          </p>
-          <div>
-            {unvisitedCountries.length !== 0 ? (
-              <select
-                onChange={this.handleChange}
-                value={this.state.countryName}
-                name="countryName"
-              >
-                <option></option>
-                {unvisitedCountries.map((country) => {
-                  counter++;
-                  return (
-                    <option key={counter} value={country.name.common}>
-                      {country.name.common}
-                    </option>
-                  );
-                })}
-              </select>
-            ) : (
-              <h1>Loading...</h1>
-            )}
-
-            <button
-              onClick={() => this.addMarker(this.state.countryName)}
-              className="login_buttons"
-            >
-              Submit
-            </button>
+        {!this.state.allCountries.length ? (
+          <LoadingSpinner />
+        ) : (
+          <div className="country_list_div">
+            <Navbar userId={this.props.singleUser.id} />
+            <div>
+              <div className="country_selector_div">
+                <div>
+                  Welcome, {this.props.singleUser.firstName}! Add Countries You
+                  Have Visited or Want to Visit!
+                </div>
+                <div>
+                  {
+                    <select
+                      onChange={this.handleChange}
+                      value={this.state.countryName}
+                      name="countryName"
+                    >
+                      <option></option>
+                      {unvisitedCountries.map((country) => {
+                        counter++;
+                        return (
+                          <option key={counter} value={country.name.common}>
+                            {country.name.common}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  }
+                  <button
+                    onClick={() => this.addMarker(this.state.countryName)}
+                    className="login_buttons country_list_button"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div id="map" className="mainMap"></div>
           </div>
-        </div>
-        <div id="map" className="mainMap"></div>
+        )}
       </div>
     );
   }

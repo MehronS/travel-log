@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { fetchSingleCountry, fetchTripCountryInfo } from "../redux/countries";
 import { fetchSingleUserWithId } from "../redux/users";
+import LoadingSpinner from "./LoadingSpinner";
 import Navbar from "./Navbar";
 
 let myMap;
@@ -71,7 +72,7 @@ class TripPlanner extends Component {
     return (
       <div>
         {!tripInfo ? (
-          <h3>Loading...</h3>
+          <LoadingSpinner />
         ) : (
           <div className="trip_plan_div">
             <Navbar userId={this.props.match.params.userId} />
@@ -120,10 +121,14 @@ class TripPlanner extends Component {
                 </div>
               </fieldset>
 
-              <fieldset className="visit_cities to_consider">
+              <div className="visit_cities to_consider">
                 <h2>Cities To Visit!</h2>
                 {tripInfo.attributes.top_cities_and_towns.map((city) => {
-                  return <div key={city.id}>{city.name.split(`,`)[0]}</div>;
+                  return (
+                    <div key={city.id} className="city">
+                      {city.name.split(`,`)[0]}
+                    </div>
+                  );
                 })}
 
                 <div className="to_consider trip_links">
@@ -149,7 +154,7 @@ class TripPlanner extends Component {
                     </a>
                   </h4>
                 </div>
-              </fieldset>
+              </div>
             </div>
           </div>
         )}
