@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "axios": "^0.24.0",
+    "babel": "^6.23.0",
     "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "eslint-plugin-react": "^7.26.1",
