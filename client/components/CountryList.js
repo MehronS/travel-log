@@ -142,7 +142,7 @@ class CountryList extends Component {
     let myIcon = L.icon({
       iconUrl: country.flags.png,
       iconSize: [30, 30],
-      // iconAnchor: [22, 94],
+      autoPan: true,
     });
 
     const marker = L.marker([country.latlng[0], country.latlng[1]], {
@@ -166,18 +166,27 @@ class CountryList extends Component {
           this.handleRemove(country.name.common, this.props.singleUser.id);
           myMap.removeLayer(marker);
         });
-      });
+      })
+      .openPopup();
+
+    myMap.flyTo([country.latlng[0], country.latlng[1]], 3, {
+      animate: true,
+      pan: {
+        duration: 2,
+      },
+    });
   }
 
   loadmap() {
     myMap = L.map("map", {
       minZoom: 3,
-      // zoomControl: false,
+      worldCopyJump: true,
     }).setView([0, 0], 0);
 
-    L.tileLayer("https://{s}.tile.openstreetmap.fr/hot//{z}/{x}/{y}.png").addTo(
-      myMap
-    );
+    L.tileLayer("http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
+      maxZoom: 20,
+      subdomains: ["mt0", "mt1", "mt2", "mt3"],
+    }).addTo(myMap);
   }
 
   async addMarker(countryName) {
