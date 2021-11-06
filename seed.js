@@ -429,11 +429,11 @@ const seed2 = async () => {
       })
     );
 
-    const user1 = await User.findByPk(4);
-    const location1 = await Location.findByPk("Tajikistan");
+    // const user1 = await User.findByPk(4);
+    // const location1 = await Location.findByPk("Tajikistan");
 
-    await user1.addPictureAtLocation(await PictureAtLocation.findByPk(3)),
-      await location1.addPictureAtLocation(await PictureAtLocation.findByPk(3));
+    // await user1.addPictureAtLocation(await PictureAtLocation.findByPk(3)),
+    //   await location1.addPictureAtLocation(await PictureAtLocation.findByPk(3));
   } catch (error) {
     console.error(error);
   }
