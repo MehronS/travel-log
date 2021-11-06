@@ -4,7 +4,7 @@ module.exports = {
     path: path.join(__dirname, "public", "dist"),
     filename: "[name].js",
   },
-  mode: "development",
+  mode: "production",
   devtool: "source-map",
   module: {
     rules: [
