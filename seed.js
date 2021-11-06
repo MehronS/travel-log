@@ -365,6 +365,15 @@ const users = [
     createdAt: "2021-11-06 01:32:06.136-04",
     updatedAt: "2021-11-06 01:32:06.136-04",
   },
+
+  {
+    firstName: "Mehron",
+    lastName: "Latifi",
+    email: "mehrons@gmail.com",
+    password: "$2b$10$qZD7Qysn/ao4s5VuUSYRIuA2hFKxaZYqdfpG4XiBZSojo/nN1Y3Ia",
+    createdAt: "2021-11-04 19:24:20.162-04",
+    updatedAt: "2021-11-04 19:24:20.162-04",
+  },
 ];
 
 const links = [
