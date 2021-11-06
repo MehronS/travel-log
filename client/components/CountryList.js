@@ -113,9 +113,11 @@ class CountryList extends Component {
       })
         .addTo(myMap)
         .bindPopup(
-          `<div class="popupDiv">
-          <h3 class="openPopup">${country.flag}${country.name.common}${country.flag}</h3><button class="popupDelete">Remove</button>
-          </div>`
+          `<div class="popupDiv openPopup">
+          <h3>Open</h3>
+          <h3 >${country.flag}${country.name.common}${country.flag}
+          </div>
+          </h3><button class="popupDelete">Remove</button>`
         )
         .on(`popupopen`, () => {
           document
@@ -150,9 +152,11 @@ class CountryList extends Component {
     })
       .addTo(myMap)
       .bindPopup(
-        `<div class="popupDiv">
-        <h3 class="openPopup">${country.flag}${country.name.common}${country.flag}</h3><button class="popupDelete">Remove</button>
-        </div>`
+        `<div class="popupDiv openPopup">
+        <h3>Open</h3>
+        <h3 >${country.flag}${country.name.common}${country.flag}
+        </div>
+        </h3><button class="popupDelete">Remove</button>`
       )
       .on(`popupopen`, () => {
         document.querySelector(".openPopup").addEventListener(`click`, (e) => {
