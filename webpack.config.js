@@ -2,7 +2,7 @@ module.exports = {
   entry: ["./client/index.js"],
   output: {
     path: __dirname,
-    filename: "bundle.js",
+    filename: "./public/bundle.js",
   },
   mode: "production",
   devtool: "source-map",
