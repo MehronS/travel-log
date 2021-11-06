@@ -25,6 +25,7 @@ const authenticateToken = (req, res, next) => {
 // /api/users/create
 
 router.route(`/create`).post(async (req, res, next) => {
+  req.body.email = req.body.email.toLowerCase();
   try {
     const newUser = await User.create(req.body);
 
@@ -85,7 +86,7 @@ router
 router.post(`/login`, async (req, res, next) => {
   try {
     const [findUser] = await User.findAll({
-      where: { email: req.body.email },
+      where: { email: req.body.email.toLowerCase() },
       include: [{ model: Location }],
     });
 
