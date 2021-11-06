@@ -42,7 +42,7 @@ const User = db.define("user", {
 User.addHook("beforeCreate", async (user) => {
   try {
     const salt = await bcrypt.genSalt(10);
-    // added .toString just in case the password comes through as an integer (like in the seed)
+    // added .toString just in case the password comes through as an integer (like in the seed))
     const hash = await bcrypt.hash(user.password.toString(), salt);
     user.password = hash;
   } catch (error) {
