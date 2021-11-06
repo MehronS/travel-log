@@ -60,7 +60,13 @@ class TripPlanner extends Component {
   loadLanguages() {
     let output = [];
     const languages = this.state.country.languages;
-    for (let key in languages) output.push(languages[key]);
+    for (let key in languages) output.push(`${languages[key]},`);
+
+    let lastword = output[output.length - 1];
+
+    lastword = lastword.slice(0, lastword.length - 1);
+    output[output.length - 1] = lastword;
+
     return output;
   }
 
