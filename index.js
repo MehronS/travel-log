@@ -24,7 +24,6 @@ app.get("*", (req, res) => {
 
 // error handling middleware
 app.use((err, req, res, next) => {
-  if (process.env.NODE_ENV !== "test") console.error(err.stack);
   res.status(err.status || 500).send(err.message || "Internal server error");
 });
 
