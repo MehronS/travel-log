@@ -68,7 +68,6 @@ class TripPlanner extends Component {
     const { country } = this.state;
     const tripInfo = this.state.tripInfo.data;
     const countryName = tripInfo ? tripInfo.attributes.name : null;
-    console.log(`from trip planner`, this.state);
 
     return (
       <div>
