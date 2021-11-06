@@ -169,7 +169,7 @@ class CountryList extends Component {
       })
       .openPopup();
 
-    myMap.flyTo([country.latlng[0], country.latlng[1]], 3, {
+    myMap.flyTo([country.latlng[0], country.latlng[1]], 4, {
       animate: true,
       pan: {
         duration: 2,
