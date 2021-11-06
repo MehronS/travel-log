@@ -326,7 +326,6 @@ const locations = [
 
 const users = [
   {
-    id: 2,
     firstName: "Nanish",
     lastName: "Saynieva",
     email: "nana_saynivea@yup.com",
@@ -335,7 +334,6 @@ const users = [
     updatedAt: "2021-11-04 19:24:20.162-04",
   },
   {
-    id: 3,
     firstName: "Mr.Mr.Nakka",
     lastName: "Latifi",
     email: "mrmrnakka@gmail.com",
@@ -344,7 +342,6 @@ const users = [
     updatedAt: "2021-11-04 19:24:20.162-04",
   },
   {
-    id: 4,
     firstName: "Mr.Nakka",
     lastName: "Latifi",
     email: "mrnakka@gmail.com",
@@ -353,7 +350,6 @@ const users = [
     updatedAt: "2021-11-04 19:24:20.162-04",
   },
   {
-    id: 7,
     firstName: "Tom",
     lastName: "Brady",
     email: "tom.brady@ne.com",
@@ -362,7 +358,6 @@ const users = [
     updatedAt: "2021-11-05 12:26:53.553-04",
   },
   {
-    id: 9,
     firstName: "Mehron",
     lastName: "Latifi",
     email: "nana_say23nieva@yahoo.com",
