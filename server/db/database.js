@@ -15,6 +15,7 @@ const db = new Sequelize(
   {
     protocol: null,
     logging: false,
+    native: true,
   }
 );
 
