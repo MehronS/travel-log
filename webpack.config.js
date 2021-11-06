@@ -1,8 +1,8 @@
 module.exports = {
   entry: ["./client/index.js"],
   output: {
-    path: __dirname,
-    filename: "bundle.js",
+    path: path.join(__dirname, "public", "dist"),
+    filename: "[name].js",
   },
   mode: "development",
   devtool: "source-map",
