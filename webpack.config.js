@@ -1,10 +1,10 @@
 module.exports = {
   entry: ["./client/index.js"],
   output: {
-    path: path.join(__dirname, "public", "dist"),
-    filename: "[name].js",
+    path: __dirname,
+    filename: "./public/bundle.js",
   },
-  mode: "production",
+  mode: "development",
   devtool: "source-map",
   module: {
     rules: [
