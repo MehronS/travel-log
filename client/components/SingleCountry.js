@@ -4,12 +4,13 @@ import { fetchSingleCountry } from "../redux/countries";
 import {
   deleteUserPictureAtLocation,
   fetchSingleUser,
+  fetchSingleUserWithId,
   fetchUserPicturesAtLocation,
   updateUserPicturesAtLocation,
 } from "../redux/users";
 import LoadingSpinner from "./LoadingSpinner";
 import ModalPictures from "./ModalPictures";
-import Navbar from "./Navbar";
+import Navbar from "./nav/Navbar";
 import TripPlanner from "./TripPlanner";
 
 let myMap;
@@ -42,6 +43,7 @@ class SingleCountry extends Component {
         await this.props.getUserPictures(userId, locationName);
         this.setState({ singleCountry: this.props.singleCountry });
 
+        await this.props.getSingleUser(userId);
         this.loadmap();
       } else {
         alert(`nah fam`);
@@ -153,7 +155,10 @@ class SingleCountry extends Component {
           />
         ) : (
           <div>
-            <Navbar userId={this.props.match.params.userId} />
+            <Navbar
+              userId={this.props.match.params.userId}
+              name={this.props.singleUser.firstName}
+            />
             {country ? (
               <div>
                 <div className="singleCountryDiv">
@@ -248,7 +253,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     getSingleCountry: (countryName) =>
       dispatch(fetchSingleCountry(countryName)),
-    getSingleUser: (id) => dispatch(fetchSingleUser(id)),
+    getSingleUser: (id) => dispatch(fetchSingleUserWithId(id)),
     getUserPictures: (userId, locationName) =>
       dispatch(fetchUserPicturesAtLocation(userId, locationName)),
     updatePictures: (userId, pictureInfo) =>

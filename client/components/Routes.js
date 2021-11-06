@@ -8,22 +8,16 @@ import TripPlanner from "./TripPlanner";
 function Routes() {
   return (
     <Router>
-      <main>
-        <Switch>
-          <Route exact path="/" component={LoginPage} />
-          <Route exact path="/dashboard/:id" component={CountryList} />
-          <Route
-            exact
-            path="/dashboard/country/:name/user/:userId"
-            component={SingleCountry}
-          />
-          <Route
-            exact
-            path="/plan-trip/:name/:userId"
-            component={TripPlanner}
-          />
-        </Switch>
-      </main>
+      <Switch>
+        <Route exact path="/" component={LoginPage} />
+        <Route exact path="/dashboard/:id" component={CountryList} />
+        <Route
+          exact
+          path="/dashboard/country/:name/user/:userId"
+          component={SingleCountry}
+        />
+        <Route exact path="/plan-trip/:name/:userId" component={TripPlanner} />
+      </Switch>
     </Router>
   );
 }

@@ -11,7 +11,7 @@ import {
   removeSingleCountryFromUser,
 } from "../redux/users";
 import LoadingSpinner from "./LoadingSpinner";
-import Navbar from "./Navbar";
+import Navbar from "./nav/Navbar";
 
 let counter = 0;
 let myMap;
@@ -70,37 +70,6 @@ class CountryList extends Component {
     }
   }
 
-  // async componentDidUpdate(prevProps) {
-  // let beenToPlaces = [];
-  // try {
-  //   if (prevProps.singleUser.locations !== this.state.singleUser.locations) {
-  //     await this.props.getSingleUser(this.props.match.params.id);
-  //     await Promise.all(
-  //       this.props.singleUser.locations.map(async (location) => {
-  //         const { data } = await axios.get(
-  //           `https://restcountries.com/v3.1/name/${location.name}`
-  //         );
-  //         beenToPlaces.push(...data);
-  //       })
-  //     );
-
-  //       await this.props.getAllCountries();
-  //       let sorted = [...this.props.countries];
-  //       sorted = sorted.sort((a, b) => {
-  //         if (a.name.common < b.name.common) return -1;
-  //         if (a.name.common > b.name.common) return 1;
-  //         return 0;
-  //       });
-  //       this.setState({
-  //         allCountries: sorted,
-  //         beenTo: beenToPlaces,
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // }
-
   loadMarkers() {
     this.state.beenTo.map((country) => {
       let myIcon = L.icon({
@@ -113,11 +82,11 @@ class CountryList extends Component {
       })
         .addTo(myMap)
         .bindPopup(
-          `<div class="popupDiv openPopup">
+          `<div class="openPopup">
           <h3>Open</h3>
-          <h3 >${country.flag}${country.name.common}${country.flag}
+          <h3>${country.flag}${country.name.common}${country.flag}</h3>
           </div>
-          </h3><button class="popupDelete">Remove</button>`
+          <button class="popupDelete">Remove</button>`
         )
         .on(`popupopen`, () => {
           document
@@ -237,6 +206,7 @@ class CountryList extends Component {
   }
 
   render() {
+    console.log(this.props);
     const countryList =
       this.state.beenTo === []
         ? []
@@ -250,49 +220,45 @@ class CountryList extends Component {
         : this.state.allCountries;
 
     return (
-      <div>
+      <>
+        <Navbar
+          name={this.props.singleUser.firstName}
+          userId={this.props.match.params.id}
+        />
+
         {!this.state.allCountries.length ? (
           <LoadingSpinner />
         ) : (
-          <div className="country_list_div">
-            <Navbar userId={this.props.singleUser.id} />
-            <div>
-              <div className="country_selector_div">
-                <div>
-                  Welcome, {this.props.singleUser.firstName}! Add Countries You
-                  Have Visited or Want to Visit!
-                </div>
-                <div>
-                  {
-                    <select
-                      onChange={this.handleChange}
-                      value={this.state.countryName}
-                      name="countryName"
-                    >
-                      <option></option>
-                      {unvisitedCountries.map((country) => {
-                        counter++;
-                        return (
-                          <option key={counter} value={country.name.common}>
-                            {country.name.common}
-                          </option>
-                        );
-                      })}
-                    </select>
-                  }
-                  <button
-                    onClick={() => this.addMarker(this.state.countryName)}
-                    className="login_buttons country_list_button"
-                  >
-                    Submit
-                  </button>
-                </div>
-              </div>
+          <div className="mapContainer">
+            <div className="country_selector">
+              <select
+                className="selector"
+                onChange={this.handleChange}
+                value={this.state.countryName}
+                name="countryName"
+              >
+                <option>Select A Country</option>
+                {unvisitedCountries.map((country) => {
+                  counter++;
+                  return (
+                    <option key={counter} value={country.name.common}>
+                      {country.name.common}
+                    </option>
+                  );
+                })}
+              </select>
+              <button
+                onClick={() => this.addMarker(this.state.countryName)}
+                className="login_buttons country_list_button"
+              >
+                Submit
+              </button>
             </div>
+
             <div id="map" className="mainMap"></div>
           </div>
         )}
-      </div>
+      </>
     );
   }
 }

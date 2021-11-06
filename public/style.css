@@ -12,12 +12,19 @@ body {
 }
 
 .mainMap {
-  height: 87vh;
+  height: 93vh;
   width: 100vw;
+  position: relative;
 }
 
-.popUp {
-  background-color: red;
+.mapContainer {
+  position: relative;
+}
+
+.selector {
+  position: absolute;
+  /* leaflet zindex is 700 */
+  z-index: 1000;
 }
 
 .openPopup {
@@ -31,8 +38,12 @@ body {
   margin-top: 10px;
 }
 
-.popupDiv {
+.leaflet-popup-content {
   text-align: center;
+}
+
+.leaflet-top .leaflet-control {
+  margin-top: 27px;
 }
 
 .singleCountryDiv {
@@ -61,28 +72,77 @@ body {
   opacity: 0.5;
 }
 
-.country_selector_div {
+.country_selector {
   display: flex;
-  justify-content: space-between;
-
-  flex-direction: row-reverse;
-  padding-left: 10px;
-  padding-right: 10px;
-  font-weight: 900;
-
-  background: #333333;
-  color: white;
 }
 
 nav {
-  align-items: center;
-  background-color: #333333;
-  color: #c0c0c0;
+  width: 100%;
+  height: 55px;
+  border-bottom: 2px solid #0d2538;
+  padding: 0 20px;
   display: flex;
-  height: 80px;
-  padding: 30px;
+  justify-content: space-between;
+}
 
+.welcome {
+  padding: 15px 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.nav_list {
+  list-style: none;
+  display: flex;
+  flex-flow: column nowrap;
+  background-color: #0d2538;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 90px;
+  height: 100vh;
+  padding-top: 3.5rem;
+  z-index: 1100;
+}
+li {
+  padding: 18px 10px;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .nav_list {
+    flex-flow: column nowrap;
+    background-color: #0d2538;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 87px;
+    height: 100vh;
+    padding-top: 3.5rem;
+  }
+}
+
+.burger_nav {
+  width: 2rem;
+  height: 2rem;
+  position: fixed;
+  top: 11px;
+  left: 20px;
+  display: flex;
   justify-content: space-around;
+  flex-flow: column nowrap;
+  z-index: 1200;
+}
+
+.burger_dash {
+  width: 2rem;
+  height: 0.25rem;
+  background-color: #333;
+  border-radius: 10px;
+  transform-origin: 1px;
+  transition: all 0.4s linear;
 }
 
 .nav_links {
@@ -106,10 +166,6 @@ nav {
 .single_country_input_div {
   display: flex;
   gap: 10px;
-}
-
-.country_list_div {
-  background: url("./loginImage.jpeg");
 }
 
 .plan_trip_div {
@@ -276,6 +332,11 @@ nav {
 .country_list_button {
   color: white;
   margin-bottom: 10px;
+  background-color: #ccc;
+  position: absolute;
+  top: 0;
+  left: 265px;
+  z-index: 1000;
 }
 
 .trip_plan_div {

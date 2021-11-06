@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { fetchSingleCountry, fetchTripCountryInfo } from "../redux/countries";
 import { fetchSingleUserWithId } from "../redux/users";
 import LoadingSpinner from "./LoadingSpinner";
-import Navbar from "./Navbar";
+import Navbar from "./nav/Navbar";
 
 let myMap;
 
@@ -20,6 +20,7 @@ class TripPlanner extends Component {
     try {
       await this.props.getSingleCountry(this.props.match.params.name);
       await this.props.getTripInfo(this.props.match.params.name);
+      await this.props.getSingleUser(this.props.match.params.usreId);
 
       this.setState({
         country: this.props.country,
@@ -81,7 +82,10 @@ class TripPlanner extends Component {
           <LoadingSpinner />
         ) : (
           <div className="trip_plan_div">
-            <Navbar userId={this.props.match.params.userId} />
+            <Navbar
+              userId={this.props.match.params.userId}
+              name={this.props.singleUser.firstName}
+            />
             <div className="singleCountryDiv">
               <fieldset id="map" className="singleCountryMap"></fieldset>
 
@@ -176,6 +180,7 @@ const mapStateToProps = (state) => {
   return {
     tripInfo: state.countries.tripInfo,
     country: state.countries.singleCountry,
+    singleUser: state.users.singleUser,
   };
 };
 
