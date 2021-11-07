@@ -5,7 +5,7 @@ import {
   fetchAddSingleCountry,
   fetchAllCountries,
   fetchSingleCountry,
-} from "../redux/countries";
+} from "../redux/locations";
 import {
   fetchSingleUserWithId,
   removeSingleCountryFromUser,

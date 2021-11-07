@@ -6,7 +6,7 @@ module.exports = router;
 
 // /api/countries
 
-router.route(`/`).get(async (req, res, next) => {
+router.get(`/`, async (req, res, next) => {
   try {
     const allCountries = await axios.get(`https://restcountries.com/v3.1/all`);
     res.send(allCountries.data);
@@ -46,6 +46,39 @@ router.get(`/trip/:name/`, async (req, res, next) => {
       const updatedLocation = await location[0].update(placeholder);
       res.send(JSON.parse(updatedLocation.locationInfo));
     } else {
+      res.send(JSON.parse(location[0].locationInfo));
+    }
+  } catch (error) {
+    next(error);
+  }
+});
+
+// api/countries/city/:name
+router.post(`/city/:name`, async (req, res, next) => {
+  try {
+    console.log(`got here`);
+    const location = await Location.findOrCreate({
+      where: { name: req.params.name },
+    });
+
+    // To store from limited APIs
+    if (location[0].locationInfo === null) {
+      console.log(`new city`);
+
+      const place = await axios({
+        url: `https://api.roadgoat.com/api/v2/destinations/${req.body.cityId}`,
+        method: `GET`,
+        auth: {
+          username: process.env.USERNAME,
+          password: process.env.PASSWORD,
+        },
+      });
+      let placeholder = location;
+      placeholder.locationInfo = JSON.stringify(place.data);
+      const updatedLocation = await location[0].update(placeholder);
+      res.send(JSON.parse(updatedLocation.locationInfo));
+    } else {
+      console.log(`old city`);
       res.send(JSON.parse(location[0].locationInfo));
     }
   } catch (error) {

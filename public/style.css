@@ -399,8 +399,9 @@ li {
 
 .city {
   font-weight: bold;
-  color: black;
+  color: blue;
   margin: 5px;
+  cursor: pointer;
 }
 
 a {

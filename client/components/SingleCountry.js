@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchSingleCountry } from "../redux/countries";
+import { fetchSingleCountry } from "../redux/locations";
 import {
   deleteUserPictureAtLocation,
   fetchSingleUser,
@@ -24,7 +24,7 @@ class SingleCountry extends Component {
       imageUrl: ``,
       showModal: false,
       singleImage: ``,
-      tripPlan: false,
+      tripPlan: true,
     };
 
     this.handleChange = this.handleChange.bind(this);

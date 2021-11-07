@@ -1,5 +1,5 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
-import countries from "./countries";
+import countries from "./locations";
 import users from "./users";
 import thunkMiddleware from "redux-thunk";
 

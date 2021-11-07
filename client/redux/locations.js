@@ -4,6 +4,7 @@ import axios from "axios";
 const SET_ALL_COUNTRIES = `SET_ALL_COUNTRIES`;
 const SET_SINGLE_COUNTRY = `SET_SINGLE_COUNTRY`;
 const SET_TRIP_INFO = `SET_TRIP_INFO`;
+const SET_SINGLE_CITY = `SET_SINGLE_CITY`;
 
 // Action Creators
 export const setCountries = (countries) => {
@@ -24,6 +25,13 @@ export const setTripInfo = (tripInfo) => {
   return {
     type: SET_TRIP_INFO,
     tripInfo,
+  };
+};
+
+export const setSingleCity = (city) => {
+  return {
+    type: SET_SINGLE_CITY,
+    city,
   };
 };
 
@@ -75,10 +83,23 @@ export const fetchTripCountryInfo = (countryName) => {
   };
 };
 
+export const fetchTripCity = (cityName, cityId) => {
+  const city = { cityId };
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.post(`api/countries/city/${cityName}`, city);
+      dispatch(setSingleCity(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
 const initialState = {
   countries: [],
   singleCountry: {},
   tripInfo: {},
+  singleCity: {},
 };
 
 export default (state = initialState, action) => {
@@ -89,6 +110,8 @@ export default (state = initialState, action) => {
       return { ...state, singleCountry: action.singleCountry[0] };
     case SET_TRIP_INFO:
       return { ...state, tripInfo: action.tripInfo };
+    case SET_SINGLE_CITY:
+      return { ...state, singleCity: action.city };
     default:
       return state;
   }
