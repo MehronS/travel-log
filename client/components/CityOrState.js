@@ -29,13 +29,19 @@ function CityOrState(props) {
       </fieldset>
       <fieldset className="to_consider">
         <h3>
-          <a href={city.airbnb_url}>Airbnb</a>
+          <a href={city.airbnb_url} target="_blank">
+            Airbnb
+          </a>
         </h3>
         <h3>
-          <a href={city.vrbo_url}>Lodging</a>
+          <a href={city.vrbo_url} target="_blank">
+            Lodging
+          </a>
         </h3>
         <h3>
-          <a href={city.getyourguide_url}>Get Your Guide</a>
+          <a href={city.getyourguide_url} target="_blank">
+            Get Your Guide
+          </a>
         </h3>
       </fieldset>
     </div>
