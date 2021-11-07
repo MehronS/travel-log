@@ -404,9 +404,14 @@ li {
   cursor: pointer;
 }
 
+.city_name {
+  text-align: center;
+}
+
 a {
   color: blue;
   text-decoration: none;
+  cursor: pointer;
 }
 
 /* Load Spinner */

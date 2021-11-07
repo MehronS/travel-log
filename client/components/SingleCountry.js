@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { fetchSingleCountry } from "../redux/locations";
+import { fetchSingleCountry, fetchTripCountryInfo } from "../redux/locations";
 import {
   deleteUserPictureAtLocation,
-  fetchSingleUser,
   fetchSingleUserWithId,
   fetchUserPicturesAtLocation,
   updateUserPicturesAtLocation,
@@ -14,7 +13,7 @@ import ModalPictures from "./ModalPictures";
 import Navbar from "./nav/Navbar";
 import TripPlanner from "./TripPlanner";
 
-let myMap;
+let myMap, marker;
 
 class SingleCountry extends Component {
   constructor() {
@@ -24,7 +23,7 @@ class SingleCountry extends Component {
       imageUrl: ``,
       showModal: false,
       singleImage: ``,
-      tripPlan: true,
+      tripPlan: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -32,10 +31,12 @@ class SingleCountry extends Component {
     this.toggleModal = this.toggleModal.bind(this);
     this.handleDelete = this.handleDelete.bind(this);
     this.planTrip = this.planTrip.bind(this);
+    this.loadMarker = this.loadMarker.bind(this);
   }
 
   async componentDidMount() {
     const token = window.localStorage.getItem(`token`);
+
     try {
       if (token) {
         await this.props.getSingleCountry(this.props.match.params.name);
@@ -44,8 +45,15 @@ class SingleCountry extends Component {
         await this.props.getUserPictures(userId, locationName);
         this.setState({ singleCountry: this.props.singleCountry });
 
+        await this.props.getTripInfo(this.state.singleCountry.name.common);
+
         await this.props.getSingleUser(userId);
+        const country = this.props.singleCountry;
         this.loadmap();
+        this.loadMarker(
+          country.capitalInfo.latlng[0],
+          country.capitalInfo.latlng[1]
+        );
       } else {
         alert(`nah fam`);
         this.props.history.push(`/`);
@@ -60,24 +68,28 @@ class SingleCountry extends Component {
     myMap = L.map("map", {
       zoomControl: false,
       minZoom: 4,
-      maxZoom: 4,
-      scrollWheelZoom: false,
+      // maxZoom: 4,
+      // scrollWheelZoom: false,
     }).setView([country.latlng[0], country.latlng[1]], 4);
 
     L.tileLayer("http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
       maxZoom: 20,
       subdomains: ["mt0", "mt1", "mt2", "mt3"],
     }).addTo(myMap);
-
-    this.loadMarker();
   }
 
-  loadMarker() {
-    const country = this.props.singleCountry;
-    return L.marker([
-      country.capitalInfo.latlng[0],
-      country.capitalInfo.latlng[1],
-    ]).addTo(myMap);
+  loadMarker(lat, lng) {
+    if (marker) {
+      myMap.removeLayer(marker);
+    }
+    marker = L.marker([lat, lng]).addTo(myMap);
+    myMap.flyTo([lat, lng], 7, {
+      animate: true,
+      pan: {
+        duration: 2,
+      },
+    });
+    return marker;
   }
 
   async handleSubmit(e) {
@@ -116,8 +128,13 @@ class SingleCountry extends Component {
 
     if (this.state.showModal)
       setTimeout(() => {
+        const country = this.props.singleCountry;
+
         this.loadmap();
-        this.loadMarker();
+        this.loadMarker(
+          country.capitalInfo.latlng[0],
+          country.capitalInfo.latlng[1]
+        );
       }, 50);
   }
 
@@ -137,6 +154,8 @@ class SingleCountry extends Component {
   }
 
   render() {
+    const countryWiki = this.props.tripInfo ? this.props.tripInfo.data : "";
+    // console.log(countryWiki ? countryWiki.attributes.wikipedia_url : `loading`);
     const country = this.state.singleCountry
       ? this.state.singleCountry
       : undefined;
@@ -160,7 +179,18 @@ class SingleCountry extends Component {
                   <fieldset id="map" className="singleCountryMap"></fieldset>
 
                   <fieldset className="singleCountryInfo">
-                    <h1>{country.name.common}</h1>
+                    <h1>
+                      <a
+                        target="_blank"
+                        href={
+                          countryWiki
+                            ? countryWiki.attributes.wikipedia_url
+                            : `loading`
+                        }
+                      >
+                        {country.name.common}
+                      </a>
+                    </h1>
                     <img src={country.coatOfArms.png} height="100px" />
                     <h3>Capital: {country.capital}</h3>
                     <img src={country.flags.png} />
@@ -184,8 +214,10 @@ class SingleCountry extends Component {
 
                 {this.state.tripPlan ? (
                   <TripPlanner
+                    loadMarker={this.loadMarker}
                     userId={this.props.match.params.userId}
                     countryName={country.name.common}
+                    tripInfo={this.props.tripInfo}
                   />
                 ) : (
                   <CountryPictures
@@ -211,6 +243,7 @@ class SingleCountry extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    tripInfo: state.countries.tripInfo,
     singleCountry: state.countries.singleCountry,
     singleUser: state.users.singleUser,
     userPictures: state.users.userPicturesAtLocation,
@@ -227,20 +260,8 @@ const mapDispatchToProps = (dispatch) => {
     updatePictures: (userId, pictureInfo) =>
       dispatch(updateUserPicturesAtLocation(userId, pictureInfo)),
     deletePicture: (id) => dispatch(deleteUserPictureAtLocation(id)),
+    getTripInfo: (countryName) => dispatch(fetchTripCountryInfo(countryName)),
   };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleCountry);
-
-{
-  /* <button
-                  className="trip_back_button login_buttons"
-                  onClick={() =>
-                    this.props.history.push(
-                      `/dashboard/country/${country.name.common}/user/${this.props.match.params.userId}`
-                    )
-                  }
-                >
-                  Back To Your Pictures
-                </button> */
-}

@@ -142,6 +142,7 @@ class CountryList extends Component {
       })
       .openPopup();
 
+    // moves the map to the new country selected
     myMap.flyTo([country.latlng[0], country.latlng[1]], 4, {
       animate: true,
       pan: {

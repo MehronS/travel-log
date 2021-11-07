@@ -1,10 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  fetchSingleCountry,
-  fetchTripCity,
-  fetchTripCountryInfo,
-} from "../redux/locations";
+import { fetchSingleCountry, fetchTripCity } from "../redux/locations";
 import { fetchSingleUserWithId } from "../redux/users";
 import CityOrState from "./CityOrState";
 import LoadingSpinner from "./LoadingSpinner";
@@ -20,12 +16,12 @@ class TripPlanner extends Component {
     };
 
     this.loadCity = this.loadCity.bind(this);
+    this.toggleCityOff = this.toggleCityOff.bind(this);
   }
 
   async componentDidMount() {
     try {
       await this.props.getSingleCountry(this.props.countryName);
-      await this.props.getTripInfo(this.props.countryName);
       await this.props.getSingleUser(this.props.userId);
 
       this.setState({
@@ -51,7 +47,6 @@ class TripPlanner extends Component {
   }
 
   async loadCity(cityName, cityId) {
-    console.log(`city click`);
     try {
       await this.props.getCity(cityName, cityId);
       this.setState({
@@ -61,15 +56,26 @@ class TripPlanner extends Component {
     } catch (error) {}
   }
 
+  toggleCityOff() {
+    const country = this.props.country;
+    this.setState({ loadCity: false });
+    this.props.loadMarker(country.latlng[0], country.latlng[1]);
+  }
+
   render() {
-    console.log(`from TripPlanner`, this.props);
+    // console.log(`from TripPlanner`, this.props);
     const tripInfo = this.state.tripInfo.data;
     const countryName = tripInfo ? tripInfo.attributes.name : null;
 
     return (
       <div>
         {this.state.loadCity ? (
-          <CityOrState city={this.props.singleCity} />
+          <CityOrState
+            toggleCity={this.toggleCityOff}
+            city={this.props.singleCity}
+            countryName={countryName}
+            loadMarker={this.props.loadMarker}
+          />
         ) : (
           <div>
             {!tripInfo ? (
@@ -165,7 +171,6 @@ class TripPlanner extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    tripInfo: state.countries.tripInfo,
     country: state.countries.singleCountry,
     singleUser: state.users.singleUser,
     singleCity: state.countries.singleCity,
@@ -174,7 +179,6 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getTripInfo: (countryName) => dispatch(fetchTripCountryInfo(countryName)),
     getSingleUser: (id) => dispatch(fetchSingleUserWithId(id)),
     getSingleCountry: (countryName) =>
       dispatch(fetchSingleCountry(countryName)),
