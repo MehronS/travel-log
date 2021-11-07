@@ -99,7 +99,7 @@ class TripPlanner extends Component {
                 <h3>Capital: {country.capital}</h3>
                 <img src={country.flags.png} />
                 <button
-                  className="trip_back_button"
+                  className="trip_back_button login_buttons"
                   onClick={() =>
                     this.props.history.push(
                       `/dashboard/country/${country.name.common}/user/${this.props.match.params.userId}`

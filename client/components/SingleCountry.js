@@ -189,13 +189,16 @@ class SingleCountry extends Component {
                       onChange={this.handleChange}
                       value={this.state.imageUrl}
                     />
-                    <button onClick={(e) => this.handleSubmit(e)}>
+                    <button
+                      className="login_buttons"
+                      onClick={(e) => this.handleSubmit(e)}
+                    >
                       Submit
                     </button>
                   </div>
                   <div className="plan_trip_div">
                     <button
-                      className="plan_trip_button"
+                      className="login_buttons"
                       onClick={() =>
                         this.props.history.push(
                           `/plan-trip/${country.name.common}/${this.props.match.params.userId}`

@@ -176,6 +176,7 @@ li {
 .single_country_input_div {
   display: flex;
   gap: 10px;
+  align-items: center;
 }
 
 .plan_trip_div {
