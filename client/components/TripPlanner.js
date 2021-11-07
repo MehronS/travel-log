@@ -57,7 +57,9 @@ class TripPlanner extends Component {
               <fieldset className="to_consider">
                 <h3>
                   Average Rating:{" "}
-                  {tripInfo.attributes.average_rating.toFixed(2)}
+                  {Number(tripInfo.attributes.average_rating.toFixed(2))
+                    ? tripInfo.attributes.average_rating.toFixed(2)
+                    : "N/A"}
                 </h3>
                 <h3>
                   Languages:{" "}

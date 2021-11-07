@@ -176,7 +176,7 @@ class SingleCountry extends Component {
                       onClick={this.planTrip}
                     >
                       {this.state.tripPlan
-                        ? `Back to ${country.name.common} Pictures`
+                        ? `Your ${country.name.common} Pictures`
                         : `Plan A Trip to ${country.name.common}!`}
                     </button>
                   </fieldset>
