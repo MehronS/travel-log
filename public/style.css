@@ -60,6 +60,14 @@ body {
 .singleCountryInfo {
   text-align: center;
   min-width: 40%;
+  position: relative;
+}
+
+.trip_back_button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50px;
 }
 
 .countryImages {
@@ -97,6 +105,7 @@ nav {
   list-style: none;
   display: flex;
   flex-flow: column nowrap;
+  flex-direction: column;
   background-color: #0d2538;
   position: fixed;
   top: 0;
@@ -106,6 +115,7 @@ nav {
   padding-top: 3.5rem;
   z-index: 1100;
 }
+
 li {
   padding: 18px 10px;
   color: white;

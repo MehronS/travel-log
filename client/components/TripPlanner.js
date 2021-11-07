@@ -98,6 +98,16 @@ class TripPlanner extends Component {
                 <img src={country.coatOfArms.png} height="100px" />
                 <h3>Capital: {country.capital}</h3>
                 <img src={country.flags.png} />
+                <button
+                  className="trip_back_button"
+                  onClick={() =>
+                    this.props.history.push(
+                      `/dashboard/country/${country.name.common}/user/${this.props.match.params.userId}`
+                    )
+                  }
+                >
+                  Back
+                </button>
               </fieldset>
             </div>
             <div className="trip_info">
