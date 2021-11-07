@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { fetchSingleCountry, fetchTripCountryInfo } from "../redux/countries";
 import { fetchSingleUserWithId } from "../redux/users";
 import LoadingSpinner from "./LoadingSpinner";
-import Navbar from "./nav/Navbar";
 
 let myMap;
 
@@ -18,44 +17,17 @@ class TripPlanner extends Component {
 
   async componentDidMount() {
     try {
-      await this.props.getSingleCountry(this.props.match.params.name);
-      await this.props.getTripInfo(this.props.match.params.name);
-      await this.props.getSingleUser(this.props.match.params.usreId);
+      await this.props.getSingleCountry(this.props.countryName);
+      await this.props.getTripInfo(this.props.countryName);
+      await this.props.getSingleUser(this.props.userId);
 
       this.setState({
         country: this.props.country,
         tripInfo: this.props.tripInfo,
       });
-
-      this.loadmap();
     } catch (error) {
       console.error(error);
     }
-  }
-
-  loadmap() {
-    const country = this.props.country;
-    myMap = L.map("map", {
-      zoomControl: false,
-      minZoom: 4,
-      maxZoom: 4,
-      scrollWheelZoom: false,
-    }).setView([country.latlng[0], country.latlng[1]], 4);
-
-    L.tileLayer("http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
-      maxZoom: 20,
-      subdomains: ["mt0", "mt1", "mt2", "mt3"],
-    }).addTo(myMap);
-
-    this.loadMarker();
-  }
-
-  loadMarker() {
-    const country = this.props.country;
-    return L.marker([
-      country.capitalInfo.latlng[0],
-      country.capitalInfo.latlng[1],
-    ]).addTo(myMap);
   }
 
   loadLanguages() {
@@ -72,7 +44,6 @@ class TripPlanner extends Component {
   }
 
   render() {
-    const { country } = this.state;
     const tripInfo = this.state.tripInfo.data;
     const countryName = tripInfo ? tripInfo.attributes.name : null;
 
@@ -82,34 +53,6 @@ class TripPlanner extends Component {
           <LoadingSpinner />
         ) : (
           <div className="trip_plan_div">
-            <Navbar
-              userId={this.props.match.params.userId}
-              name={this.props.singleUser.firstName}
-            />
-            <div className="singleCountryDiv">
-              <fieldset id="map" className="singleCountryMap"></fieldset>
-
-              <fieldset className="singleCountryInfo">
-                <h1>
-                  <a href={tripInfo.attributes.wikipedia_url} target="_blank">
-                    {country.name.common}
-                  </a>
-                </h1>
-                <img src={country.coatOfArms.png} height="100px" />
-                <h3>Capital: {country.capital}</h3>
-                <img src={country.flags.png} />
-                <button
-                  className="trip_back_button login_buttons"
-                  onClick={() =>
-                    this.props.history.push(
-                      `/dashboard/country/${country.name.common}/user/${this.props.match.params.userId}`
-                    )
-                  }
-                >
-                  Back
-                </button>
-              </fieldset>
-            </div>
             <div className="trip_info">
               <fieldset className="to_consider">
                 <h3>

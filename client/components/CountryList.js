@@ -206,7 +206,6 @@ class CountryList extends Component {
   }
 
   render() {
-    console.log(this.props);
     const countryList =
       this.state.beenTo === []
         ? []

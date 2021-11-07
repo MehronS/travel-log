@@ -8,6 +8,7 @@ import {
   fetchUserPicturesAtLocation,
   updateUserPicturesAtLocation,
 } from "../redux/users";
+import CountryPictures from "./CountryPictures";
 import LoadingSpinner from "./LoadingSpinner";
 import ModalPictures from "./ModalPictures";
 import Navbar from "./nav/Navbar";
@@ -142,13 +143,7 @@ class SingleCountry extends Component {
 
     return (
       <div>
-        {this.state.tripPlan ? (
-          <TripPlanner
-            planTrip={this.planTrip}
-            country={this.props.singleCountry}
-            user={this.props.singleUser}
-          />
-        ) : this.state.showModal ? (
+        {this.state.showModal ? (
           <ModalPictures
             image={this.state.singleImage}
             toggleModal={this.toggleModal}
@@ -175,64 +170,34 @@ class SingleCountry extends Component {
                         .toString()
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                     </h3>
+
+                    <button
+                      className="login_buttons plan_trip_button"
+                      onClick={this.planTrip}
+                    >
+                      {this.state.tripPlan
+                        ? `Back to ${country.name.common} Pictures`
+                        : `Plan A Trip to ${country.name.common}!`}
+                    </button>
                   </fieldset>
                 </div>
-                <fieldset className="single_country_input_div">
-                  <h3>Your Photos from {country.name.common}!!</h3>
-                  <h3>Add More</h3>
-                  <div>
-                    <input
-                      autoFocus
-                      placeholder="Input URL Here"
-                      name="imageUrl"
-                      className="imageUrl"
-                      onChange={this.handleChange}
-                      value={this.state.imageUrl}
-                    />
-                    <button
-                      className="login_buttons"
-                      onClick={(e) => this.handleSubmit(e)}
-                    >
-                      Submit
-                    </button>
-                  </div>
-                  <div className="plan_trip_div">
-                    <button
-                      className="login_buttons"
-                      onClick={() =>
-                        this.props.history.push(
-                          `/plan-trip/${country.name.common}/${this.props.match.params.userId}`
-                        )
-                      }
-                    >
-                      Plan A Trip to {country.name.common}!
-                    </button>
-                  </div>
-                </fieldset>
 
-                <div className="imageDiv">
-                  {this.props.userPictures
-                    ? this.props.userPictures
-                        .sort((a, b) => a.id - b.id)
-                        .map((image) => {
-                          return (
-                            <fieldset key={image.id} className="imageField">
-                              <button
-                                className="delete_button_picture"
-                                onClick={() => this.handleDelete(image.id)}
-                              >
-                                Delete
-                              </button>
-                              <img
-                                src={image.imageUrl}
-                                className="countryImages"
-                                onClick={() => this.toggleModal(image.id)}
-                              />
-                            </fieldset>
-                          );
-                        })
-                    : null}
-                </div>
+                {this.state.tripPlan ? (
+                  <TripPlanner
+                    userId={this.props.match.params.userId}
+                    countryName={country.name.common}
+                  />
+                ) : (
+                  <CountryPictures
+                    userPictures={this.props.userPictures}
+                    handleDelete={this.handleDelete}
+                    toggleModal={this.toggleModal}
+                    handleSubmit={this.handleSubmit}
+                    state={this.state}
+                    handleChange={this.handleChange}
+                    country={country}
+                  />
+                )}
               </div>
             ) : (
               <LoadingSpinner />
@@ -266,3 +231,16 @@ const mapDispatchToProps = (dispatch) => {
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleCountry);
+
+{
+  /* <button
+                  className="trip_back_button login_buttons"
+                  onClick={() =>
+                    this.props.history.push(
+                      `/dashboard/country/${country.name.common}/user/${this.props.match.params.userId}`
+                    )
+                  }
+                >
+                  Back To Your Pictures
+                </button> */
+}

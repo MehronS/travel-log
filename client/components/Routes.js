@@ -3,7 +3,6 @@ import { HashRouter as Router, Route, Switch } from "react-router-dom";
 import CountryList from "./CountryList";
 import LoginPage from "./LoginPage";
 import SingleCountry from "./SingleCountry";
-import TripPlanner from "./TripPlanner";
 
 function Routes() {
   return (
@@ -16,7 +15,6 @@ function Routes() {
           path="/dashboard/country/:name/user/:userId"
           component={SingleCountry}
         />
-        <Route exact path="/plan-trip/:name/:userId" component={TripPlanner} />
       </Switch>
     </Router>
   );

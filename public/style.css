@@ -13,8 +13,8 @@ body {
 
 .mainMap {
   height: 93vh;
-  width: 100vw;
   position: relative;
+  width: 100vw;
 }
 
 .mapContainer {
@@ -63,11 +63,18 @@ body {
   position: relative;
 }
 
-.trip_back_button {
+.trip_back_button,
+.plan_trip_button {
   position: absolute;
   top: 0;
   left: 0;
-  width: 50px;
+  width: 150px;
+}
+
+.plan_trip_button {
+  background: chartreuse;
+  font-weight: bold;
+  /* width: 150px; */
 }
 
 .countryImages {
@@ -181,17 +188,13 @@ li {
 
 .single_country_input_div {
   display: flex;
-  gap: 10px;
   align-items: center;
 }
 
-.plan_trip_div {
+.country_pictures {
+  display: flex;
   margin-left: auto;
-}
-
-.plan_trip_button {
-  background: chartreuse;
-  font-weight: bold;
+  gap: 1rem;
 }
 
 .imageUrl {
