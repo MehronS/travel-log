@@ -93,6 +93,12 @@ nav {
   justify-content: space-between;
 }
 
+.nav_icon {
+  width: 30px;
+  height: auto;
+  margin-left: 10px;
+}
+
 .welcome {
   padding: 15px 0;
   display: flex;
@@ -110,7 +116,7 @@ nav {
   position: fixed;
   top: 0;
   left: 0;
-  width: 90px;
+  width: 95px;
   height: 100vh;
   padding-top: 3.5rem;
   z-index: 1100;
