@@ -63,7 +63,10 @@ class TripPlanner extends Component {
   toggleCityOff() {
     const country = this.props.country;
     this.setState({ loadCity: false });
-    this.props.loadMarker(country.latlng[0], country.latlng[1]);
+    this.props.loadMarker(
+      country.capitalInfo.latlng[0],
+      country.capitalInfo.latlng[1]
+    );
   }
 
   render() {
