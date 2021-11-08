@@ -10,7 +10,7 @@ const Location = db.define("location", {
       notEmpty: true,
     },
   },
-
+  // not used for now. Will implement or remove at a later time
   rating: {
     type: Sequelize.INTEGER,
     defaultValue: 5,

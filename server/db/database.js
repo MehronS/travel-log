@@ -1,21 +1,12 @@
 const Sequelize = require("sequelize");
 
-// (
-//   process.env.DATABASE_URL || "postgres://localhost:5432/travel_guide",
-//   {
-//     logging: false,
-//     ssl: {
-//       rejectUnauthorized: false,
-//     },
-//   }
-// );
-
 const db = new Sequelize(
+  // Database URL also useful for Heroku Deployment
   process.env.DATABASE_URL || "postgres://localhost:5432/travel_guide",
   {
-    protocol: null,
+    protocol: null, // helps with setting up heroku
     logging: false,
-    native: true,
+    native: true, // For SSO with Heroku
   }
 );
 

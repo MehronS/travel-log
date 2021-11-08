@@ -34,10 +34,12 @@ class TripPlanner extends Component {
   }
 
   loadLanguages() {
+    // API returns country laguages in an object, so made a function to put it into an array to parse over
     let output = [];
     const languages = this.state.country.languages;
     for (let key in languages) output.push(`${languages[key]},`);
 
+    // a bunch of code just to remove the comma from the last country on the list
     let lastword = output[output.length - 1];
 
     lastword = lastword.slice(0, lastword.length - 1);
@@ -46,6 +48,7 @@ class TripPlanner extends Component {
     return output;
   }
 
+  // go to the CityOrState component
   async loadCity(cityName, cityId) {
     try {
       await this.props.getCity(cityName, cityId);
@@ -56,6 +59,7 @@ class TripPlanner extends Component {
     } catch (error) {}
   }
 
+  // brings back to the TripPlanner component instead of the single City
   toggleCityOff() {
     const country = this.props.country;
     this.setState({ loadCity: false });
@@ -63,7 +67,6 @@ class TripPlanner extends Component {
   }
 
   render() {
-    // console.log(`from TripPlanner`, this.props);
     const tripInfo = this.state.tripInfo.data;
     const countryName = tripInfo ? tripInfo.attributes.name : null;
 

@@ -13,6 +13,7 @@ import ModalPictures from "./ModalPictures";
 import Navbar from "./nav/Navbar";
 import TripPlanner from "./TripPlanner";
 
+// need these since several leaflet function need to reference the map and maker
 let myMap, marker;
 
 class SingleCountry extends Component {
@@ -35,14 +36,14 @@ class SingleCountry extends Component {
   }
 
   async componentDidMount() {
-    const token = window.localStorage.getItem(`token`);
+    const token = window.localStorage.getItem(`token`); // get token to verify
 
     try {
       if (token) {
         await this.props.getSingleCountry(this.props.match.params.name);
         const locationName = { locationName: this.props.match.params.name };
         const userId = this.props.match.params.userId;
-        await this.props.getUserPictures(userId, locationName);
+        await this.props.getUserPictures(userId, locationName); // make the call to the picuture route
         this.setState({ singleCountry: this.props.singleCountry });
 
         await this.props.getTripInfo(this.state.singleCountry.name.common);
@@ -50,6 +51,7 @@ class SingleCountry extends Component {
         await this.props.getSingleUser(userId);
         const country = this.props.singleCountry;
         this.loadmap();
+        // load at the Capital City marker
         this.loadMarker(
           country.capitalInfo.latlng[0],
           country.capitalInfo.latlng[1]
@@ -68,8 +70,6 @@ class SingleCountry extends Component {
     myMap = L.map("map", {
       zoomControl: false,
       minZoom: 4,
-      // maxZoom: 4,
-      // scrollWheelZoom: false,
     }).setView([country.latlng[0], country.latlng[1]], 4);
 
     L.tileLayer("http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}", {
@@ -116,6 +116,7 @@ class SingleCountry extends Component {
     });
   }
 
+  // change from single picture to full view
   toggleModal(imageId) {
     const image = this.props.userPictures.filter(
       (image) => image.id === imageId
@@ -149,13 +150,13 @@ class SingleCountry extends Component {
     }
   }
 
+  // loads the TripPlanner component based on true/false
   planTrip() {
     this.setState({ tripPlan: !this.state.tripPlan });
   }
 
   render() {
-    const countryWiki = this.props.tripInfo ? this.props.tripInfo.data : "";
-    // console.log(countryWiki ? countryWiki.attributes.wikipedia_url : `loading`);
+    const countryWiki = this.props.tripInfo ? this.props.tripInfo.data : ""; // working around errors popping up before tripInfo loads
     const country = this.state.singleCountry
       ? this.state.singleCountry
       : undefined;

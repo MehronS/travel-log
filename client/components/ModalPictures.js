@@ -6,7 +6,8 @@ function ModalPictures(props) {
       className="modalDiv"
       onClick={(e) => {
         if (e.target.className === `modalDiv`) {
-          props.toggleModal();
+          // ignore clicking on the actual picture or the comment section
+          props.toggleModal(); // get back to the single country view with picture list
         }
       }}
     >

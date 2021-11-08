@@ -60,6 +60,7 @@ class LoginPage extends Component {
     }
   }
 
+  // to change view from login to create account
   toggleModal() {
     this.setState({ showModal: !this.state.showModal });
   }

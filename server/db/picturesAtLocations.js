@@ -6,6 +6,7 @@ const PictureAtLocation = db.define("pictureAtLocation", {
     type: Sequelize.STRING,
   },
 
+  // Not utilized yet but will implement later on
   description: {
     type: Sequelize.TEXT,
   },

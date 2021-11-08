@@ -3,8 +3,9 @@ import React from "react";
 function CityOrState(props) {
   const city = props.city.data.attributes;
 
+  // move the map marker to the selected city
   props.loadMarker(city.latitude, city.longitude);
-  console.log(city);
+
   return (
     <div>
       <button onClick={props.toggleCity} className="login_buttons">

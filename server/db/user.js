@@ -39,6 +39,7 @@ const User = db.define("user", {
   },
 });
 
+// hash the password before adding to the database
 User.addHook("beforeCreate", async (user) => {
   try {
     const salt = await bcrypt.genSalt(10);

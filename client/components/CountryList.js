@@ -13,7 +13,7 @@ import {
 import LoadingSpinner from "./LoadingSpinner";
 import Navbar from "./nav/Navbar";
 
-let counter = 0;
+// need these since several leaflet function need to reference the map and maker
 let myMap;
 
 class CountryList extends Component {
@@ -37,7 +37,10 @@ class CountryList extends Component {
     let beenToPlaces = [];
     try {
       if (token) {
+        // Authenticate Token
+
         await this.props.getSingleUser(this.props.match.params.id);
+        // ping REST Countries API for every location on users selections
         await Promise.all(
           this.props.singleUser.locations.map(async (location) => {
             const { data } = await axios.get(
@@ -47,6 +50,7 @@ class CountryList extends Component {
           })
         );
 
+        // Get all the countries
         await this.props.getAllCountries();
         let sorted = [...this.props.countries];
         sorted = sorted.sort((a, b) => {
@@ -70,6 +74,7 @@ class CountryList extends Component {
     }
   }
 
+  // load all users locations markers
   loadMarkers() {
     this.state.beenTo.map((country) => {
       let myIcon = L.icon({
@@ -89,6 +94,7 @@ class CountryList extends Component {
           <button class="popupDelete">Remove</button>`
         )
         .on(`popupopen`, () => {
+          // direct click from popup to single country page
           document
             .querySelector(".openPopup")
             .addEventListener(`click`, (e) => {
@@ -98,6 +104,7 @@ class CountryList extends Component {
               );
             });
 
+          // Remove country from users location list
           document
             .querySelector(".popupDelete")
             .addEventListener(`click`, () => {
@@ -108,6 +115,7 @@ class CountryList extends Component {
     });
   }
 
+  // load a marker when Submit is clicked with a selected country on a drop down
   loadSingleMarker() {
     let country = this.props.singleCountry;
     let myIcon = L.icon({
@@ -128,6 +136,7 @@ class CountryList extends Component {
         </h3><button class="popupDelete">Remove</button>`
       )
       .on(`popupopen`, () => {
+        // direct click from popup to single country page
         document.querySelector(".openPopup").addEventListener(`click`, (e) => {
           e.preventDefault();
           this.props.history.push(
@@ -135,6 +144,7 @@ class CountryList extends Component {
           );
         });
 
+        // Remove country from users location list
         document.querySelector(".popupDelete").addEventListener(`click`, () => {
           this.handleRemove(country.name.common, this.props.singleUser.id);
           myMap.removeLayer(marker);
@@ -151,6 +161,7 @@ class CountryList extends Component {
     });
   }
 
+  // initially load the leaflet map
   loadmap() {
     myMap = L.map("map", {
       minZoom: 3,
@@ -161,8 +172,14 @@ class CountryList extends Component {
       maxZoom: 20,
       subdomains: ["mt0", "mt1", "mt2", "mt3"],
     }).addTo(myMap);
+
+    // Trying to find a way to get country name from a click
+    // myMap.on(`click`, (e) => {
+    //   console.log(e);
+    // });
   }
 
+  // create a marker layer on the map
   async addMarker(countryName) {
     if (!countryName) return alert(`Please Select Country`);
     else {
@@ -174,6 +191,7 @@ class CountryList extends Component {
         beenTo: [...this.state.beenTo, this.props.singleCountry],
       });
 
+      // call the load single marker to put marker visually on the map
       this.loadSingleMarker();
     }
   }
@@ -185,11 +203,14 @@ class CountryList extends Component {
     });
   }
 
+  // take out the country from the map and user
   async handleRemove(countryName, userId) {
     try {
+      // remove country association from user
       await this.props.removeCountry(countryName, userId);
       let beenToPlaces = [];
 
+      //  re-render the users current locations after the removal
       await this.props.getSingleUser(this.props.match.params.id);
       await Promise.all(
         this.props.singleUser.locations.map(async (location) => {
@@ -207,6 +228,7 @@ class CountryList extends Component {
   }
 
   render() {
+    // helps getting list into a variable to make terneries to prevent page loading errors
     const countryList =
       this.state.beenTo === []
         ? []
@@ -239,9 +261,8 @@ class CountryList extends Component {
               >
                 <option>Select A Country</option>
                 {unvisitedCountries.map((country) => {
-                  counter++;
                   return (
-                    <option key={counter} value={country.name.common}>
+                    <option key={country.cca2} value={country.name.common}>
                       {country.name.common}
                     </option>
                   );
