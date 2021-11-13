@@ -1,5 +1,10 @@
 import React from "react";
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
+import {
+  HashRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from "react-router-dom";
 import CountryList from "./CountryList";
 import LoginPage from "./LoginPage";
 import SingleCountry from "./SingleCountry";
@@ -15,6 +20,7 @@ function Routes() {
           path="/dashboard/country/:name/user/:userId"
           component={SingleCountry}
         />
+        <Redirect to="/" />
       </Switch>
     </Router>
   );

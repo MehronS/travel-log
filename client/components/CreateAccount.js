@@ -1,6 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 
 function CreateAccount(props) {
+  const [state, setState] = useState({
+    email: ``,
+    password: ``,
+    firstName: ``,
+    lastName: ``,
+  });
+
+  function handleChange(event) {
+    setState((prevState) => {
+      return { ...prevState, [event.target.name]: event.target.value };
+    });
+    console.log(state);
+  }
+
   return (
     <div
       className="modalDiv"
@@ -17,37 +31,40 @@ function CreateAccount(props) {
           placeholder="First Name"
           className="create_inputs"
           name="firstName"
-          value={props.state.firstName}
-          onChange={props.handleChange}
+          value={state.firstName}
+          onChange={(e) => handleChange(e)}
         />
 
         <input
           placeholder="Last Name"
           className="create_inputs"
           name="lastName"
-          value={props.state.lastName}
-          onChange={props.handleChange}
+          value={state.lastName}
+          onChange={(e) => handleChange(e)}
         />
 
         <input
           placeholder="Email"
           className="create_inputs"
-          name="newEmail"
-          value={props.state.newEmail}
-          onChange={props.handleChange}
+          name="email"
+          value={state.email}
+          onChange={(e) => handleChange(e)}
         />
 
         <input
           type="password"
           placeholder="Password"
           className="create_inputs"
-          name="newPass"
-          value={props.state.newPass}
-          onChange={props.handleChange}
+          name="password"
+          value={state.password}
+          onChange={(e) => handleChange(e)}
         />
         <div>
           {" "}
-          <button onClick={props.handleCreate} className="create_button">
+          <button
+            onClick={() => props.handleCreate(state)}
+            className="create_button"
+          >
             Create Account
           </button>
         </div>

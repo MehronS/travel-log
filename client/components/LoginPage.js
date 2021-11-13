@@ -13,7 +13,7 @@ class LoginPage extends Component {
       lastName: ``,
       newEmail: ``,
       newPass: ``,
-      showModal: false,
+      showModal: true,
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -46,13 +46,13 @@ class LoginPage extends Component {
     }
   }
 
-  async handleCreate() {
-    const newUser = {
-      firstName: this.state.firstName,
-      lastName: this.state.lastName,
-      email: this.state.newEmail,
-      password: this.state.newPass,
-    };
+  async handleCreate(newUser) {
+    // const newUser = {
+    //   firstName: this.state.firstName,
+    //   lastName: this.state.lastName,
+    //   email: this.state.newEmail,
+    //   password: this.state.newPass,
+    // };
     try {
       await this.props.userCreate(newUser);
     } catch (error) {
