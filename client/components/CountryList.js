@@ -12,7 +12,7 @@ import {
 } from "../redux/users";
 import LoadingSpinner from "./LoadingSpinner";
 import Navbar from "./nav/Navbar";
-// import L from "leaflet";
+import L from "leaflet";
 import geoData from "./../../geo-data/countries.json";
 
 // need these since several leaflet function need to reference the map and maker
