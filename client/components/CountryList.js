@@ -186,7 +186,6 @@ class CountryList extends Component {
   }
 
   onEachCountry(country, layer) {
-    // console.log(country.properties.ADMIN);
     layer.on("click", () => {
       this.addMarker(country.properties.ADMIN);
     });
