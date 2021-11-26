@@ -12,6 +12,8 @@ import {
 } from "../redux/users";
 import LoadingSpinner from "./LoadingSpinner";
 import Navbar from "./nav/Navbar";
+import L from "leaflet";
+import geoData from "./../../geo-data/countries.json";
 
 // need these since several leaflet function need to reference the map and maker
 let myMap;
@@ -32,6 +34,7 @@ class CountryList extends Component {
   }
 
   async componentDidMount() {
+    console.log(geoData);
     const token = window.localStorage.getItem(`token`);
 
     let beenToPlaces = [];
@@ -173,10 +176,11 @@ class CountryList extends Component {
       subdomains: ["mt0", "mt1", "mt2", "mt3"],
     }).addTo(myMap);
 
-    // Trying to find a way to get country name from a click
-    // myMap.on(`click`, (e) => {
-    //   console.log(e);
-    // });
+    L.geoJSON(geoData, {
+      weight: 1,
+      fillOpacity: 0.0,
+      color: "red",
+    }).addTo(myMap);
   }
 
   // create a marker layer on the map

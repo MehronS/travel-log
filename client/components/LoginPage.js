@@ -13,7 +13,7 @@ class LoginPage extends Component {
       lastName: ``,
       newEmail: ``,
       newPass: ``,
-      showModal: true,
+      showModal: false,
     };
 
     this.handleChange = this.handleChange.bind(this);
