@@ -12,6 +12,8 @@ import {
 } from "../redux/users";
 import LoadingSpinner from "./LoadingSpinner";
 import Navbar from "./nav/Navbar";
+import L from "leaflet";
+import geoData from "./../../geo-data/countries.json";
 
 // need these since several leaflet function need to reference the map and maker
 let myMap;
@@ -29,6 +31,7 @@ class CountryList extends Component {
     this.addMarker = this.addMarker.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.handleRemove = this.handleRemove.bind(this);
+    this.onEachCountry = this.onEachCountry.bind(this);
   }
 
   async componentDidMount() {
@@ -173,10 +176,21 @@ class CountryList extends Component {
       subdomains: ["mt0", "mt1", "mt2", "mt3"],
     }).addTo(myMap);
 
-    // Trying to find a way to get country name from a click
-    // myMap.on(`click`, (e) => {
-    //   console.log(e);
-    // });
+    L.geoJSON(geoData, {
+      weight: 1,
+      fillOpacity: 0.0,
+      // color: "black",
+      // fillColor: "red",
+      onEachFeature: this.onEachCountry,
+    }).addTo(myMap);
+  }
+
+  onEachCountry(country, layer) {
+    // console.log(country.properties.ADMIN);
+    layer.on("click", () => {
+      this.addMarker(country.properties.ADMIN);
+      console.log(country.properties.ADMIN);
+    });
   }
 
   // create a marker layer on the map
@@ -259,7 +273,7 @@ class CountryList extends Component {
                 value={this.state.countryName}
                 name="countryName"
               >
-                <option>Select A Country</option>
+                <option>Click on the Map or Select A Country</option>
                 {unvisitedCountries.map((country) => {
                   return (
                     <option key={country.cca2} value={country.name.common}>
