@@ -50,3 +50,23 @@ function CityOrState(props) {
 }
 
 export default CityOrState;
+
+/*
+
+ Lets invite Sarahs new friend Joe to her event. She can select him frmo the dropdown of all of her friends, and Add him to the event. When she scrolls down to the bottom of the page, Sarah will be able to see everyone who's going to be attending!
+
+ To help organize the details, Sarah can create a chat specifically for this event where everyone can communicate.
+ ---'type in a msg'---.
+
+ Looks like Joe responded with a message. ---wait ? ---
+
+ Awesome, let the planning begin.
+
+
+   In the profile page, Sarah can make changes to her account information as well as manage her friend requests. Looks like she has 2 friend requests pending. Lets accept and head over to the personal page.
+
+This is Sarah's personnel hub. From here, she can see her old and new friends, Events she is hosting, and events that she is just attending.
+
+
+Now that you have seen our application, here is Sean to talk a little about our tech stack.
+*/

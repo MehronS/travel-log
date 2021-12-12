@@ -121,6 +121,8 @@ router
     }
   });
 
+// /api/countries/
+
 // /api/countries/:name/:userId
 router.delete(`/:name/:userId`, async (req, res, next) => {
   try {

@@ -186,8 +186,13 @@ class CountryList extends Component {
   }
 
   onEachCountry(country, layer) {
-    layer.on("click", () => {
+    layer.on("click", (e) => {
       this.addMarker(country.properties.ADMIN);
+      // e.target.setStyle({
+      //   color: "green",
+      //   // fillColor: "blue",
+      //   fillOpacity: 0.5,
+      // });
     });
   }
 
@@ -265,13 +270,15 @@ class CountryList extends Component {
         ) : (
           <div className="mapContainer">
             <div className="country_selector">
-              <select
+              <input
+                list="suggestions"
                 className="selector"
                 onChange={this.handleChange}
                 value={this.state.countryName}
                 name="countryName"
-              >
-                <option>Click on the Map or Select A Country</option>
+                onSubmit={() => this.addMarker(this.state.countryName)}
+              />
+              <datalist id="suggestions">
                 {unvisitedCountries.map((country) => {
                   return (
                     <option key={country.cca2} value={country.name.common}>
@@ -279,7 +286,8 @@ class CountryList extends Component {
                     </option>
                   );
                 })}
-              </select>
+              </datalist>
+
               <button
                 onClick={() => this.addMarker(this.state.countryName)}
                 className="login_buttons country_list_button"
