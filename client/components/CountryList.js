@@ -286,6 +286,7 @@ class CountryList extends Component {
                   onChange={this.handleChange}
                   value={this.state.countryName}
                   name="countryName"
+                  placeholder="Input Country Name..."
                 />
                 <datalist id="suggestions">
                   {unvisitedCountries.map((country) => {
