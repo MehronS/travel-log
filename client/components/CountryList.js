@@ -69,7 +69,7 @@ class CountryList extends Component {
         this.loadmap();
         this.loadMarkers();
       } else {
-        alert(`nah fam`);
+        alert(`please log in`);
         this.props.history.push(`/`);
       }
     } catch (error) {
@@ -162,6 +162,9 @@ class CountryList extends Component {
         duration: 2,
       },
     });
+
+    //reset input field
+    this.setState({ countryName: `` });
   }
 
   // initially load the leaflet map
@@ -270,30 +273,30 @@ class CountryList extends Component {
         ) : (
           <div className="mapContainer">
             <div className="country_selector">
-              <input
-                list="suggestions"
-                className="selector"
-                onChange={this.handleChange}
-                value={this.state.countryName}
-                name="countryName"
-                onSubmit={() => this.addMarker(this.state.countryName)}
-              />
-              <datalist id="suggestions">
-                {unvisitedCountries.map((country) => {
-                  return (
-                    <option key={country.cca2} value={country.name.common}>
-                      {country.name.common}
-                    </option>
-                  );
-                })}
-              </datalist>
-
-              <button
-                onClick={() => this.addMarker(this.state.countryName)}
-                className="login_buttons country_list_button"
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  // if (!this.state.countryName) return;
+                  this.addMarker(this.state.countryName);
+                }}
               >
-                Submit
-              </button>
+                <input
+                  list="suggestions"
+                  className="selector"
+                  onChange={this.handleChange}
+                  value={this.state.countryName}
+                  name="countryName"
+                />
+                <datalist id="suggestions">
+                  {unvisitedCountries.map((country) => {
+                    return (
+                      <option key={country.cca2} value={country.name.common}>
+                        {country.name.common}
+                      </option>
+                    );
+                  })}
+                </datalist>
+              </form>
             </div>
 
             <div id="map" className="mainMap"></div>

@@ -349,7 +349,7 @@ li {
   margin-left: 5px;
 }
 
-.country_list_button {
+/* .country_list_button {
   color: white;
   margin-bottom: 10px;
   background-color: #ccc;
@@ -357,7 +357,7 @@ li {
   top: 0;
   left: 144px;
   z-index: 1000;
-}
+} */
 
 .trip_plan_div {
   min-height: 100%;
