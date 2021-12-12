@@ -8,9 +8,12 @@ function CountryPictures(props) {
         <div className="country_pictures">
           <h3>Add More</h3>
           <div>
+            <form encType="multipart/form-data">
+              <input type="file" />
+            </form>
             <input
               autoFocus
-              placeholder="Input URL Here"
+              placeholder="Or Input URL Here"
               name="imageUrl"
               className="imageUrl"
               onChange={props.handleChange}
