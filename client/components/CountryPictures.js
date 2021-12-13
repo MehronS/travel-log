@@ -8,9 +8,18 @@ function CountryPictures(props) {
         <div className="country_pictures">
           <h3>Add More</h3>
           <div>
+            <form
+              encType="multipart/form-data"
+              // action="/api/pictures"
+              // method="POST"
+              onSubmit={(e) => props.handleUpload(e)}
+            >
+              <input type="file" name="images" multiple="multiple" />
+              <input type="submit" />
+            </form>
             <input
               autoFocus
-              placeholder="Input URL Here"
+              placeholder="Or Input URL Here"
               name="imageUrl"
               className="imageUrl"
               onChange={props.handleChange}
@@ -40,7 +49,11 @@ function CountryPictures(props) {
                       Delete
                     </button>
                     <img
-                      src={image.imageUrl}
+                      src={
+                        image.imageUrl.slice(0, 6) === `images`
+                          ? `/images/${image.imageUrl}`
+                          : image.imageUrl
+                      }
                       className="countryImages"
                       onClick={() => props.toggleModal(image.id)}
                     />

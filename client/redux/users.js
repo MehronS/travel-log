@@ -113,10 +113,35 @@ export const removeSingleCountryFromUser = (countryName, userId) => {
   return async (dispatch) => {
     try {
       const { data } = await axios.delete(
-        `api/countries/${countryName}/${userId}`
+        `/api/countries/${countryName}/${userId}`
       );
 
       dispatch(setSingleUser(data));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+};
+
+export const uploadUserPicturesAtLocation = (userId, locationName, files) => {
+  // Have to create a FormData in order to send the images as the multipart/form-data encryption via axios.
+
+  const fd = new FormData();
+
+  fd.append("images", files);
+  // for some reason, cant append an array of files once. Maybe cause its not an array but an object of objects. So.. use for in loop to keep appending single file to the same `images` key and the append will create an array itself
+  for (let key in files) fd.append(`images`, files[key]);
+
+  return async (dispatch) => {
+    try {
+      const { data } = await axios({
+        data: fd,
+        url: `/api/pictures/${locationName}/${userId}`,
+        method: `POST`,
+      });
+
+      // console.log(`from thunk`, data);
+      // dispatch(setUserPicturesAtLocation(data));
     } catch (error) {
       console.error(error);
     }

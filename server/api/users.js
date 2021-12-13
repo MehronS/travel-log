@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const axios = require("axios");
 const { User, Location, PictureAtLocation } = require("../db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
+// const multer = require(`multer`);
+// const upload = multer({ dest: "public/files" });
 
 module.exports = router;
 
