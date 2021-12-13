@@ -6,6 +6,7 @@ import {
   fetchSingleUserWithId,
   fetchUserPicturesAtLocation,
   updateUserPicturesAtLocation,
+  uploadUserPicturesAtLocation,
 } from "../redux/users";
 import CountryPictures from "./CountryPictures";
 import LoadingSpinner from "./LoadingSpinner";
@@ -25,6 +26,7 @@ class SingleCountry extends Component {
       showModal: false,
       singleImage: ``,
       tripPlan: false,
+      images: [],
     };
 
     this.handleChange = this.handleChange.bind(this);
@@ -33,6 +35,7 @@ class SingleCountry extends Component {
     this.handleDelete = this.handleDelete.bind(this);
     this.planTrip = this.planTrip.bind(this);
     this.loadMarker = this.loadMarker.bind(this);
+    this.handleUpload = this.handleUpload.bind(this);
   }
 
   async componentDidMount() {
@@ -104,6 +107,31 @@ class SingleCountry extends Component {
 
       this.props.updatePictures(userId, locationInfo);
       this.setState({ imageUrl: `` });
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async handleUpload(e) {
+    try {
+      e.preventDefault();
+      const locationName = { locationName: this.props.match.params.name };
+      const userId = this.props.match.params.userId;
+
+      // get the images uploaded by user. Comes as an object of objects. annoying.. gotta use for in loop in back end
+      let files = document.getElementsByTagName("input")[0].files;
+
+      // const body = new FormData(); // to be able to send files via axios
+      // body.append("images", files);
+      // console.log(body);
+
+      await this.props.uploadImages(
+        userId,
+        this.props.match.params.name,
+        files
+      );
+
+      this.props.getUserPictures(userId, locationName);
     } catch (error) {
       console.error(error);
     }
@@ -229,6 +257,7 @@ class SingleCountry extends Component {
                     state={this.state}
                     handleChange={this.handleChange}
                     country={country}
+                    handleUpload={this.handleUpload}
                   />
                 )}
               </div>
@@ -262,6 +291,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(updateUserPicturesAtLocation(userId, pictureInfo)),
     deletePicture: (id) => dispatch(deleteUserPictureAtLocation(id)),
     getTripInfo: (countryName) => dispatch(fetchTripCountryInfo(countryName)),
+    uploadImages: (userId, locationName, files) =>
+      dispatch(uploadUserPicturesAtLocation(userId, locationName, files)),
   };
 };
 
