@@ -11,7 +11,7 @@ function MenuNav(props) {
         transition: `transform 0.4s ease-in-out`,
       }}
     >
-      <li>Profile</li>
+      {/* <li>Profile</li> */}
       <li>
         <Link to={`/dashboard/${props.userId}`} className="nav_links">
           Dashboard
