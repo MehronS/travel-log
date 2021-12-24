@@ -15,7 +15,8 @@
   "devDependencies": {
     "css-loader": "^6.5.0",
     "nodemon": "^2.0.14",
-    "style-loader": "^3.3.1"
+    "style-loader": "^3.3.1",
+    "multer": "^1.4.4"
   },
   "dependencies": {
     "@babel/core": "^7.16.0",
