@@ -10,7 +10,7 @@ Travel Log is an application to store pictures of coutnries you have been to and
 ## Usage
 
 1. Go to the deployment link (above) and create an account
-2. Click countries you have been to or want to visit on the map to create a little flag. You can also enter the country name on the top right search bar
+2. Click countries you have been to or want to visit on the map to create a little flag. You can also enter the country name on the top left search bar
 3. Click open the flag on any country to go into the country page. This is where you can upload your photos or plan a trip the specific country.
 
 Anytime you want to see your photos of a specific country, you can just open that country from the world map and they will render for you. 
