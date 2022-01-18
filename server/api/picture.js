@@ -25,11 +25,12 @@ const multerFilter = (req, file, cb) => {
     fileType === "jpeg" ||
     fileType === "png" ||
     fileType === "jpg" ||
-    fileType === "gif"
+    fileType === "gif" ||
+    fileType === "svg"
   ) {
     cb(null, true);
   } else {
-    cb(new Error("Not an JPEG, GIF, JPG or PNG File!!"), false);
+    cb(new Error("Not an JPEG, GIF, JPG, SVG or PNG File!!"), false);
   }
 };
 
