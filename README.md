@@ -19,7 +19,7 @@ Anytime you want to see your photos of a specific country, you can just open tha
 
 1. React and Redux for the front end
 2. Node.Js, Express, Sequelize/PostgreSQL for the backend. 
-3. Leaflet libraries combined with Roadgoat API and REST Countries API to provide information
+3. Leaflet libraries combined with RoadGoat API and REST Countries API to provide information
 
 ## My Github
 Mehron Latifi - https://github.com/MehronS
