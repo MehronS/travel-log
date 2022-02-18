@@ -3,7 +3,7 @@ import React from "react";
 function CityOrState(props) {
   const city = props.city.data.attributes;
 
-  // move the map marker to the selected city
+  // move the map marker to the selected city location
   props.loadMarker(city.latitude, city.longitude);
 
   return (
